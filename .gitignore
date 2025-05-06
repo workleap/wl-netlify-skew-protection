@@ -1,0 +1,10 @@
+node_modules
+dist
+.pnpm-debug.log*
+.turbo
+.rslib
+.retype
+
+# Mac
+.DS_Store
+*.pem

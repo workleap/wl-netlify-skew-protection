@@ -1,0 +1,20 @@
+[build]
+    publish = "sample/dist"
+    edge_functions = "sample/netlify/edge-functions"
+    command = "pnpm build-sample"
+
+[[headers]]
+    for = "/index.html"
+    [headers.values]
+        Cache-Control = "public, max-age=60, must-revalidate"
+        Access-Control-Allow-Origin = "*"
+
+[[headers]]
+    for = "/*.(js|css|webp|png|jpg|jpeg|svg|gif)"
+    [headers.values]
+        Cache-Control = "public, max-age=31536000, immutable"
+        Access-Control-Allow-Origin = "*"
+
+[[edge_functions]]
+    path = "/*"
+    function = "skew-protection"
