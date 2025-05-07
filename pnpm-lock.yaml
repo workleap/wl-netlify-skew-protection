@@ -37,10 +37,11 @@ importers:
         version: 5.8.3
 
   lib:
-    devDependencies:
+    dependencies:
       '@netlify/edge-functions':
-        specifier: 2.12.0
+        specifier: ^2.12.0
         version: 2.12.0
+    devDependencies:
       '@rslib/core':
         specifier: 0.6.1
         version: 0.6.1(typescript@5.8.3)
@@ -99,9 +100,6 @@ importers:
         specifier: 7.5.0
         version: 7.5.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
     devDependencies:
-      '@netlify/edge-functions':
-        specifier: 2.12.0
-        version: 2.12.0
       '@rsbuild/core':
         specifier: 1.3.4
         version: 1.3.4
@@ -123,9 +121,12 @@ importers:
       '@workleap/eslint-plugin':
         specifier: 3.3.2
         version: 3.3.2(@types/estree@1.0.7)(@typescript-eslint/parser@8.29.0(eslint@8.57.1)(typescript@5.8.3))(@typescript-eslint/utils@8.32.0(eslint@8.57.1)(typescript@5.8.3))(eslint@8.57.1)(typescript@5.8.3)(vitest@3.1.1(@types/debug@4.1.12)(@types/node@22.15.4)(happy-dom@17.4.4)(jiti@2.4.2)(yaml@2.7.1))
+      '@workleap/netlify-skew-protection':
+        specifier: workspace:*
+        version: link:../lib
       '@workleap/rsbuild-configs':
-        specifier: 2.0.1
-        version: 2.0.1(@rsbuild/core@1.3.4)(@rspack/core@1.3.2(@swc/helpers@0.5.17))(typescript@5.8.3)
+        specifier: 3.0.0
+        version: 3.0.0(@rsbuild/core@1.3.4)(@rspack/core@1.3.2(@swc/helpers@0.5.17))(typescript@5.8.3)
       '@workleap/typescript-configs':
         specifier: 3.0.3
         version: 3.0.3(typescript@5.8.3)
@@ -2580,8 +2581,8 @@ packages:
       typescript:
         optional: true
 
-  '@workleap/rsbuild-configs@2.0.1':
-    resolution: {integrity: sha512-OFTAT+zjUhm1QQDo5mnAkKNFJyhqiQ3xRjDMG6VPv2VNa8mwDGBvxWEmCNX2S+1bW7KnGGHuYEzhoo5iC1Pmdg==}
+  '@workleap/rsbuild-configs@3.0.0':
+    resolution: {integrity: sha512-/UfJiSV/Q7+ms66ZtFvmFERqTZehCUrur7KantPmIeNUbHu8OWUKBquRHqABq661lZHd+/uIZVk1JxsV4oVB2w==}
     peerDependencies:
       '@rsbuild/core': ^1.3.1
       '@rspack/core': ^1.3.0
@@ -10680,7 +10681,7 @@ snapshots:
       - supports-color
       - vitest
 
-  '@workleap/rsbuild-configs@2.0.1(@rsbuild/core@1.3.4)(@rspack/core@1.3.2(@swc/helpers@0.5.17))(typescript@5.8.3)':
+  '@workleap/rsbuild-configs@3.0.0(@rsbuild/core@1.3.4)(@rspack/core@1.3.2(@swc/helpers@0.5.17))(typescript@5.8.3)':
     dependencies:
       '@rsbuild/core': 1.3.4
       '@rsbuild/plugin-basic-ssl': 1.1.1(@rsbuild/core@1.3.4)

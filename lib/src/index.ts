@@ -12,43 +12,65 @@ export interface CreateSkewProtectionFunctionOptions {
      */
     secretEnvironmentVariableName?: string;
     /**
+     * @default: nf-sp
+     */
+    cookieName?: string;
+    /**
      * @default 86400000
      */
     cookieMaxAgeInMs?: number;
+    /**
+     * @default false
+     */
+    debug?: boolean;
 }
 
-/**
- *
- * @param entrypoints
- * @param cookieName
- * @param options
- * @returns
- */
-export function createSkewProtectionFunction(entrypoints: string[], cookieName: string, options: CreateSkewProtectionFunctionOptions = {}) {
+function createLogDebugFunction(debug: boolean) {
+    return debug
+        ? (log: string, ...rest: unknown[]) => {
+            return console.log(log, ...rest);
+        }
+        : () => {};
+}
+
+export function createSkewProtectionFunction(entrypoints: string[], options: CreateSkewProtectionFunctionOptions = {}) {
     return async (request: Request, context: Context) => {
         const {
             secretEnvironmentVariableName = "SKEW_PROTECTION_SECRET",
+            cookieName = "nf_sp",
             // Expires in 1 day.
-            cookieMaxAgeInMs = 1000 * 60 * 60 * 24
+            cookieMaxAgeInMs = 1000 * 60 * 60 * 24,
+            debug = false
         } = options;
+
+        const logDebug = createLogDebugFunction(debug);
 
         const secret = Netlify.env.get(secretEnvironmentVariableName);
 
         try {
             if (!context.deploy || !context.deploy.id || !context.deploy.published) {
+                logDebug("This is dev mode, exiting");
+
                 // Dev mode, skipping skew protection.
                 return;
             }
 
             if (!secret) {
-                console.error(`[Netlify Skew Protection] Skew protection edge function is not installed properly. Missing or invalid env variable. Did you configured a env variabled named "${secretEnvironmentVariableName}" for your Netlify site?`);
+                console.error(`The edge function is not installed properly. Missing or invalid env variable. Did you configured a env variabled named "${secretEnvironmentVariableName}" for your Netlify site?`);
 
                 return;
             }
 
+            logDebug("The secret has been retrieved successfully.");
+            logDebug("Provided entrypoints are:", entrypoints);
+
             const url = new URL(request.url);
 
+            logDebug("The request URL path name is:", url.pathname);
+
             if (entrypoints.includes(url.pathname)) {
+                logDebug(`One of the provided entrypoint match the request URL path name, writing a cookie with the ${context.deploy.id} deployment id and exiting.`);
+
                 context.cookies.set({
                     name: cookieName,
                     // Cookie size is about 114 bytes.
@@ -64,23 +86,37 @@ export function createSkewProtectionFunction(entrypoints: string[], cookieName: 
                 return;
             }
 
+            logDebug(`Retrieving cookie with name "${cookieName}"...`);
+
             const cookie = context.cookies.get(cookieName);
 
             if (!cookie) {
+                logDebug(`Cookie with name "${cookieName}" cannot be found, exiting`);
+
                 // The cookie cannot not found.
                 return;
+            } else {
+                logDebug("Retrieved the cookie successfully.");
             }
+
+            logDebug("Validating the cookie signature...");
 
             const deploy = await verifySignature(cookie, secret);
 
             if (!deploy) {
+                logDebug("The cookie is invalid, deleting the cookie and exiting");
+
                 // The cookie is invalid.
                 context.cookies.delete(cookieName);
 
                 return;
+            } else {
+                logDebug("The cookie signature is valid.");
             }
 
             if (Date.now() - deploy.ts > cookieMaxAgeInMs) {
+                logDebug("The cookie is expired, deleting the cookie and exiting");
+
                 // The cookie is expired.
                 context.cookies.delete(cookieName);
 
@@ -88,16 +124,22 @@ export function createSkewProtectionFunction(entrypoints: string[], cookieName: 
             }
 
             if (deploy.id === context.deploy.id) {
+                logDebug("This cookie deployment id is the current deploy id, exiting.");
+
                 // Current deploy, no need to proxy.
                 return;
             }
 
             const target = new URL(request.url);
-            target.hostname = `${deploy.id}--${context.site.name}.netlify.app`;
+            const hostname = `${deploy.id}--${context.site.name}.netlify.app`;
+
+            logDebug(`Re-routing the request to the following hostname: "${hostname}"`);
+
+            target.hostname = hostname;
 
             return fetch(target, request);
         } catch (error) {
-            console.error("[Netlify Skew Protection] An unmanaged error occured.", error);
+            console.error(error);
 
             return;
         }
