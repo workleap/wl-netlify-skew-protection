@@ -1,6 +1,9 @@
 {
     "$schema": "https://unpkg.com/@changesets/config@latest/schema.json",
-    "changelog": "@changesets/cli/changelog",
+    "changelog": [
+        "@changesets/changelog-github",
+        { "repo": "gsoft-inc/wl-netlify-skew-protection" }
+    ],
     "commit": false,
     "fixed": [],
     "linked": [],
