@@ -112,7 +112,9 @@ async function rerouteRequestWithBasicAuthBypass(target: URL, originalRequest: R
     logDebug("POST request response status is: ", postResponse.status);
 
     const cookies = postResponse.headers.getSetCookie();
-    const jwtMatch = cookies[0].match(new RegExp(`^${siteId}=(?<value>.*); P`));
+    // The expected cookie format is: <siteId>=<JWT>; <other attributes>
+    // This regex captures the JWT value associated with the siteId, stopping at the first semicolon.
+    const jwtMatch = cookies[0].match(new RegExp(`^${siteId}=(?<value>[^;]+)`));
     const jwt = jwtMatch?.groups?.value;
 
     if (!jwt) {
