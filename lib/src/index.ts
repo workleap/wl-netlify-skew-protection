@@ -6,11 +6,17 @@ export interface CreateSkewProtectionFunctionOptions {
     /**
      * We don't want users to be able to access very old versions of the site, so
      * the cookie is signed with HMAC to prevent tampering.
-     * The secret must be configured as an environment variable of the Netlify site using the provided
-     * environment variable name name.
+     * The secret must be configured as an environment variable of the Netlify site
+     * using the provided environment variable name.
      * @default SKEW_PROTECTION_SECRET
      */
     secretEnvironmentVariableName?: string;
+    /**
+     * If the site is protected by a basic auth, the basic auth must be configured as an
+     * environment variable of the Netlify site using the provided environment variable name.
+     * @default BASIC_AUTH_PASSWORD
+     */
+    basicAuthPasswordEnvironmentVariableName?: string;
     /**
      * @default: nf-sp
      */
@@ -25,18 +31,123 @@ export interface CreateSkewProtectionFunctionOptions {
     debug?: boolean;
 }
 
+type LogDebugFunction = (log: string, ...rest: unknown[]) => void;
+
 function createLogDebugFunction(debug: boolean) {
-    return debug
+    const fct: LogDebugFunction = debug
         ? (log: string, ...rest: unknown[]) => {
             return console.log(log, ...rest);
         }
         : () => {};
+
+    return fct;
+}
+
+interface Payload {
+    id: string;
+    ts: number;
+}
+
+/** Returns a string with the shape `<hex data (*B)>.<hex signature (43B)>` */
+async function sign(data: Payload, secret: string): Promise<string> {
+    const message = new TextEncoder().encode(JSON.stringify(data));
+    const keyData = new TextEncoder().encode(secret);
+    const cryptoKey = await crypto.subtle.importKey("raw", keyData, { name: "HMAC", hash: "SHA-256" }, true, ["sign", "verify"]);
+    const signature = new Uint8Array(await crypto.subtle.sign("HMAC", cryptoKey, message));
+
+    return `${encodeHex(message)}.${encodeHex(signature)}`;
+}
+
+/** Verifies the signature of the cookie, then return the payload. If invalid, returns `null` */
+async function verifySignature(cookie: string, secret: string): Promise<Payload | null> {
+    const [message, signature] = cookie.split(".").map(value => decodeHex(value));
+    const keyData = new TextEncoder().encode(secret);
+    const cryptoKey = await crypto.subtle.importKey("raw", keyData, { name: "HMAC", hash: "SHA-256" }, true, ["sign", "verify"]);
+    const valid = await crypto.subtle.verify("HMAC", cryptoKey, signature, message);
+
+    if (!valid) {
+        return null;
+    }
+
+    return JSON.parse(new TextDecoder().decode(message));
+}
+
+function encodeHex(data: Uint8Array): string {
+    let result = "";
+    for (const byte of data) {
+        result += byte.toString(16).padStart(2, "0");
+    }
+
+    return result;
+}
+
+function decodeHex(data: string): Uint8Array {
+    const result = new Uint8Array(data.length / 2);
+    for (let i = 0; i < data.length; i += 2) {
+        result[i / 2] = parseInt(data.slice(i, i + 2), 16);
+    }
+
+    return result;
+}
+
+async function rerouteRequestWithBasicAuthBypass(target: URL, originalRequest: Request, siteId: string, basicAuthPassword: string, logDebug: LogDebugFunction) {
+    logDebug("Re-routing the request using a basic auth bypass strategy.");
+
+    const data = new FormData();
+
+    data.append("form-name", "form 1");
+    data.append("password", basicAuthPassword);
+
+    logDebug("Sending a POST request to obtain the JWT.");
+
+    const postResponse = await fetch(target, {
+        method: "POST",
+        body: new URLSearchParams(Array.from(data.entries()).map(([key, value]) => [key, value.toString()])).toString(),
+        headers: {
+            "content-type": "application/x-www-form-urlencoded"
+        },
+        redirect: "manual"
+    });
+
+    logDebug("POST request response status is: ", postResponse.status);
+
+    const cookies = postResponse.headers.getSetCookie();
+    // The expected cookie format is: <siteId>=<JWT>; <other attributes>
+    // This regex captures the JWT value associated with the siteId, stopping at the first semicolon.
+    const jwtMatch = cookies[0].match(new RegExp(`^${siteId}=(?<value>[^;]+)`));
+    const jwt = jwtMatch?.groups?.value;
+
+    if (!jwt) {
+        logDebug("Failed to extract the JWT from the POST response, returning a 401 response.");
+
+        return new Response(null, {
+            status: 401,
+            headers: { "content-type": "text/html" }
+        });
+    }
+
+    logDebug("Extracted the JWT from the POST response.");
+    logDebug("Re-routing the request.");
+
+    return fetch(target, {
+        ...originalRequest,
+        headers: {
+            ...originalRequest.headers,
+            // Odly, sending the JWT with "Authorization": `Bearer ${jwt}` doesn't work?
+            cookie: `${siteId}=${jwt}`
+        }
+    });
+}
+
+function rerouteRequest(target: URL, originalRequest: Request) {
+    return fetch(target, originalRequest);
 }
 
 export function createSkewProtectionFunction(entrypoints: string[], options: CreateSkewProtectionFunctionOptions = {}) {
     return async (request: Request, context: Context) => {
         const {
             secretEnvironmentVariableName = "SKEW_PROTECTION_SECRET",
+            basicAuthPasswordEnvironmentVariableName = "BASIC_AUTH_PASSWORD",
             cookieName = "nf_sp",
             // Expires in 1 day.
             cookieMaxAgeInMs = 1000 * 60 * 60 * 24,
@@ -46,6 +157,7 @@ export function createSkewProtectionFunction(entrypoints: string[], options: Cre
         const logDebug = createLogDebugFunction(debug);
 
         const secret = Netlify.env.get(secretEnvironmentVariableName);
+        const basicAuthPassword = Netlify.env.get(basicAuthPasswordEnvironmentVariableName);
 
         try {
             if (!context.deploy || !context.deploy.id || !context.deploy.published) {
@@ -137,60 +249,15 @@ export function createSkewProtectionFunction(entrypoints: string[], options: Cre
 
             target.hostname = hostname;
 
-            return fetch(target, request);
+            return basicAuthPassword
+                ? rerouteRequestWithBasicAuthBypass(target, request, context.site.id!, basicAuthPassword, logDebug)
+                : rerouteRequest(target, request);
         } catch (error) {
             console.error(error);
 
             return;
         }
     };
-}
-
-interface Payload {
-    id: string;
-    ts: number;
-}
-
-/** Returns a string with the shape `<hex data (*B)>.<hex signature (43B)>` */
-async function sign(data: Payload, secret: string): Promise<string> {
-    const message = new TextEncoder().encode(JSON.stringify(data));
-    const keyData = new TextEncoder().encode(secret);
-    const cryptoKey = await crypto.subtle.importKey("raw", keyData, { name: "HMAC", hash: "SHA-256" }, true, ["sign", "verify"]);
-    const signature = new Uint8Array(await crypto.subtle.sign("HMAC", cryptoKey, message));
-
-    return `${encodeHex(message)}.${encodeHex(signature)}`;
-}
-
-/** Verifies the signature of the cookie, then return the payload. If invalid, returns `null` */
-async function verifySignature(cookie: string, secret: string): Promise<Payload | null> {
-    const [message, signature] = cookie.split(".").map(value => decodeHex(value));
-    const keyData = new TextEncoder().encode(secret);
-    const cryptoKey = await crypto.subtle.importKey("raw", keyData, { name: "HMAC", hash: "SHA-256" }, true, ["sign", "verify"]);
-    const valid = await crypto.subtle.verify("HMAC", cryptoKey, signature, message);
-
-    if (!valid) {
-        return null;
-    }
-
-    return JSON.parse(new TextDecoder().decode(message));
-}
-
-function encodeHex(data: Uint8Array): string {
-    let result = "";
-    for (const byte of data) {
-        result += byte.toString(16).padStart(2, "0");
-    }
-
-    return result;
-}
-
-function decodeHex(data: string): Uint8Array {
-    const result = new Uint8Array(data.length / 2);
-    for (let i = 0; i < data.length; i += 2) {
-        result[i / 2] = parseInt(data.slice(i, i + 2), 16);
-    }
-
-    return result;
 }
 
 export const config: Config = {
