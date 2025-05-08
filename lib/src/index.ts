@@ -74,6 +74,7 @@ async function verifySignature(cookie: string, secret: string): Promise<Payload 
 
 function encodeHex(data: Uint8Array): string {
     let result = "";
+
     for (const byte of data) {
         result += byte.toString(16).padStart(2, "0");
     }
@@ -83,6 +84,7 @@ function encodeHex(data: Uint8Array): string {
 
 function decodeHex(data: string): Uint8Array {
     const result = new Uint8Array(data.length / 2);
+
     for (let i = 0; i < data.length; i += 2) {
         result[i / 2] = parseInt(data.slice(i, i + 2), 16);
     }
@@ -121,8 +123,7 @@ async function rerouteRequestWithBasicAuthBypass(target: URL, originalRequest: R
         logDebug("Failed to extract the JWT from the POST response, returning a 401 response.");
 
         return new Response(null, {
-            status: 401,
-            headers: { "content-type": "text/html" }
+            status: 401
         });
     }
 
@@ -163,7 +164,6 @@ export function createSkewProtectionFunction(entrypoints: string[], options: Cre
             if (!context.deploy || !context.deploy.id || !context.deploy.published) {
                 logDebug("This is dev mode, exiting");
 
-                // Dev mode, skipping skew protection.
                 return;
             }
 
@@ -205,7 +205,6 @@ export function createSkewProtectionFunction(entrypoints: string[], options: Cre
             if (!cookie) {
                 logDebug(`Cookie with name "${cookieName}" cannot be found, exiting`);
 
-                // The cookie cannot not found.
                 return;
             } else {
                 logDebug("Retrieved the cookie successfully.");
@@ -218,7 +217,6 @@ export function createSkewProtectionFunction(entrypoints: string[], options: Cre
             if (!deploy) {
                 logDebug("The cookie is invalid, deleting the cookie and exiting");
 
-                // The cookie is invalid.
                 context.cookies.delete(cookieName);
 
                 return;
@@ -229,7 +227,6 @@ export function createSkewProtectionFunction(entrypoints: string[], options: Cre
             if (Date.now() - deploy.ts > cookieMaxAgeInMs) {
                 logDebug("The cookie is expired, deleting the cookie and exiting");
 
-                // The cookie is expired.
                 context.cookies.delete(cookieName);
 
                 return;
@@ -238,7 +235,6 @@ export function createSkewProtectionFunction(entrypoints: string[], options: Cre
             if (deploy.id === context.deploy.id) {
                 logDebug("This cookie deployment id is the current deploy id, exiting.");
 
-                // Current deploy, no need to proxy.
                 return;
             }
 
