@@ -145,21 +145,21 @@ function rerouteRequest(target: URL, originalRequest: Request) {
 }
 
 export function createSkewProtectionFunction(entrypoints: string[], options: CreateSkewProtectionFunctionOptions = {}) {
+    const {
+        secretEnvironmentVariableName = "SKEW_PROTECTION_SECRET",
+        basicAuthPasswordEnvironmentVariableName = "BASIC_AUTH_PASSWORD",
+        cookieName = "nf_sp",
+        // Expires in 1 day.
+        cookieMaxAgeInMs = 1000 * 60 * 60 * 24,
+        debug = false
+    } = options;
+
+    const logDebug = createLogDebugFunction(debug);
+
+    const secret = Netlify.env.get(secretEnvironmentVariableName);
+    const basicAuthPassword = Netlify.env.get(basicAuthPasswordEnvironmentVariableName);
+
     return async (request: Request, context: Context) => {
-        const {
-            secretEnvironmentVariableName = "SKEW_PROTECTION_SECRET",
-            basicAuthPasswordEnvironmentVariableName = "BASIC_AUTH_PASSWORD",
-            cookieName = "nf_sp",
-            // Expires in 1 day.
-            cookieMaxAgeInMs = 1000 * 60 * 60 * 24,
-            debug = false
-        } = options;
-
-        const logDebug = createLogDebugFunction(debug);
-
-        const secret = Netlify.env.get(secretEnvironmentVariableName);
-        const basicAuthPassword = Netlify.env.get(basicAuthPasswordEnvironmentVariableName);
-
         try {
             if (!context.deploy || !context.deploy.id || !context.deploy.published) {
                 logDebug("This is dev mode, exiting");
