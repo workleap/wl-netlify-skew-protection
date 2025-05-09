@@ -2,6 +2,7 @@ import type { Context, Cookie } from "@netlify/edge-functions";
 import { http } from "msw";
 import { setupServer } from "msw/node";
 import { beforeAll, test } from "vitest";
+import { CookieName, createSkewProtectionFunction, sign, verifySignature } from "../src/index.ts";
 
 const SecretKey = "secret-key";
 const Secret = "secret";
@@ -19,8 +20,6 @@ beforeAll(() => {
 });
 
 test("when an entrypoint is requested, skew protection cookie is set", async ({ expect }) => {
-    const { createSkewProtectionFunction, verifySignature, CookieName } = await import("../src/index.ts");
-
     // Setup the request and context.
     const request = new Request("https://example.com/manifest.json");
     const cookies: Cookie[] = [];
@@ -58,8 +57,6 @@ test("when an entrypoint is requested, skew protection cookie is set", async ({ 
 });
 
 test("when the resource is requested with a cookie already set, load the file from correct deploy", async ({ expect, onTestFinished }) => {
-    const { createSkewProtectionFunction, sign } = await import("../src/index.ts");
-
     // Setup a mock server to simulate the resource request
     const server = setupServer(http.get("https://previous-deploy-id--site-name.netlify.app/file.js", () => Response.json({ success: true })));
     server.listen();
