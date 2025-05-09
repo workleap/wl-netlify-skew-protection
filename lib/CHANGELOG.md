@@ -1,5 +1,11 @@
 # @workleap/netlify-skew-protection
 
+## 0.0.2
+
+### Patch Changes
+
+- [#7](https://github.com/workleap/wl-netlify-skew-protection/pull/7) [`1a59c97`](https://github.com/workleap/wl-netlify-skew-protection/commit/1a59c976d66aa669ab0b3363893734970505e56e) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Moved the retrieval of the env vars outside of the function definition.
+
 ## 0.0.1
 
 ### Patch Changes
