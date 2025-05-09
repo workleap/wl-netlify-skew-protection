@@ -15,6 +15,7 @@
         "eslint": "eslint . --ignore-pattern lib --ignore-pattern sample --max-warnings=-0 --cache --cache-location node_modules/.cache/eslint",
         "typecheck": "tsc",
         "syncpack": "syncpack lint",
+        "test": "turbo run test --continue",
         "changeset": "changeset",
         "publish-pkg": "changeset publish",
         "publish-pr-pkg": "pkg-pr-new publish ./lib --packageManager=pnpm --pnpm",

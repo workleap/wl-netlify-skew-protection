@@ -2,6 +2,10 @@
 
 import type { Config, Context } from "@netlify/edge-functions";
 
+export const SecretEnvironmentVariable = "SKEW_PROTECTION_SECRET";
+export const BasicAuthPasswordEnvironmentVariableName = "BASIC_AUTH_PASSWORD";
+export const CookieName = "nf_sp";
+
 export interface CreateSkewProtectionFunctionOptions {
     /**
      * We don't want users to be able to access very old versions of the site, so
@@ -49,7 +53,7 @@ interface Payload {
 }
 
 /** Returns a string with the shape `<hex data (*B)>.<hex signature (43B)>` */
-async function sign(data: Payload, secret: string): Promise<string> {
+export async function sign(data: Payload, secret: string): Promise<string> {
     const message = new TextEncoder().encode(JSON.stringify(data));
     const keyData = new TextEncoder().encode(secret);
     const cryptoKey = await crypto.subtle.importKey("raw", keyData, { name: "HMAC", hash: "SHA-256" }, true, ["sign", "verify"]);
@@ -59,7 +63,7 @@ async function sign(data: Payload, secret: string): Promise<string> {
 }
 
 /** Verifies the signature of the cookie, then return the payload. If invalid, returns `null` */
-async function verifySignature(cookie: string, secret: string): Promise<Payload | null> {
+export async function verifySignature(cookie: string, secret: string): Promise<Payload | null> {
     const [message, signature] = cookie.split(".").map(value => decodeHex(value));
     const keyData = new TextEncoder().encode(secret);
     const cryptoKey = await crypto.subtle.importKey("raw", keyData, { name: "HMAC", hash: "SHA-256" }, true, ["sign", "verify"]);
@@ -146,9 +150,9 @@ function rerouteRequest(target: URL, originalRequest: Request) {
 
 export function createSkewProtectionFunction(entrypoints: string[], options: CreateSkewProtectionFunctionOptions = {}) {
     const {
-        secretEnvironmentVariableName = "SKEW_PROTECTION_SECRET",
-        basicAuthPasswordEnvironmentVariableName = "BASIC_AUTH_PASSWORD",
-        cookieName = "nf_sp",
+        secretEnvironmentVariableName = SecretEnvironmentVariable,
+        basicAuthPasswordEnvironmentVariableName = BasicAuthPasswordEnvironmentVariableName,
+        cookieName = CookieName,
         // Expires in 1 day.
         cookieMaxAgeInMs = 1000 * 60 * 60 * 24,
         debug = false
