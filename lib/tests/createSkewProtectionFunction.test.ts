@@ -44,7 +44,7 @@ test("when an entrypoint is requested, skew protection cookie is set", async ({ 
     await fct(request, context as unknown as Context);
 
     // Check that the cookie is set.
-    expect(cookies).length(1);
+    expect(cookies).toHaveLength(1);
     const cookie = cookies[0];
     expect(cookie.name).toBe(CookieName);
     expect(cookie.value).toBeDefined();
