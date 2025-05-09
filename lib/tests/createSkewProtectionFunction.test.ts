@@ -39,7 +39,7 @@ test("when an entrypoint is requested, skew protection cookie is set", async ({ 
     // Create the skew protection function.
     const fct = createSkewProtectionFunction(["/manifest.json"], {
         secretEnvironmentVariableName: SecretKey
-     });
+    });
 
     // Execute the skew protection function.
     await fct(request, context as unknown as Context);
