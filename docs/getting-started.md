@@ -218,6 +218,12 @@ To test your new set up, follow these steps:
 
 3. The `Set-Cookie` header should include an `nf_sp` cookie (or wathever name you choose for the Skew Protection cookie)
 
+### Troubleshoot issues
 
+- If the cookie is not set, troubleshoot the issue using Netlify [edge functions logs](https://docs.netlify.com/edge-functions/get-started/#monitor).
+
+- If the logs mentions that the edge function is not installed properly, this is probably because the site doesn't include an `SKEW_PROTECTION_SECRET` environment variable. 
+
+- If the requests to previous asset files are not re-routed, set the [debug](./available-options.md#debug) option, deploy the edge function again and troubleshoot the issue using the [edge functions logs](https://docs.netlify.com/edge-functions/get-started/#monitor).
 
 
