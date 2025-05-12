@@ -6,6 +6,7 @@ import { Layout } from "./Layout.tsx";
 const Home = lazy(() => import("./Home.tsx"));
 const PageA = lazy(() => import("./PageA.tsx"));
 const PageB = lazy(() => import("./PageB.tsx"));
+const PageC = lazy(() => import("./PageC.tsx"));
 
 export function App() {
     const navigate = useNavigate();
@@ -25,6 +26,10 @@ export function App() {
                     <Route
                         path="/b"
                         element={<PageB />}
+                    />
+                    <Route
+                        path="/app/c"
+                        element={<PageC />}
                     />
                 </Route>
             </Routes>

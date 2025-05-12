@@ -10,6 +10,7 @@ export function Layout() {
                 <Link to="/">Home</Link>
                 <Link to="/a">Page A</Link>
                 <Link to="/b">Page B</Link>
+                <Link to="/app/c">Page C</Link>
             </Inline>
             <Suspense fallback={<Div>Loading...</Div>}>
                 <Outlet />
