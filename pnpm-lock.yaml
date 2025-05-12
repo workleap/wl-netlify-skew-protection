@@ -82,7 +82,7 @@ importers:
         specifier: 3.1.1
         version: 3.1.1(@types/debug@4.1.12)(@types/node@22.15.17)(jiti@2.4.2)(msw@2.7.3(@types/node@22.15.17)(typescript@5.8.3))(yaml@2.7.1)
 
-  samples/cd:
+  samples/netlify-cd:
     dependencies:
       '@hopper-ui/components':
         specifier: 1.5.9
