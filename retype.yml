@@ -32,7 +32,7 @@ output: .retype
 url: https://workleap.github.io/wl-netlify-skew-protection/
 
 branding:
-    title: "Chromado"
+    title: "Skew Protection"
     logo: ./static/logo.png
 
 favicon: ./static/favicon.png
@@ -54,7 +54,7 @@ links:
 
     - text: Feature requests
       icon: comment-discussion
-      link: https://github.com/workleap/wl-netlify-skew-protectionchromado/discussions
+      link: https://github.com/workleap/wl-netlify-skew-protection/discussions
       target: blank
 
     - text: Releases
