@@ -26,6 +26,10 @@ export interface CreateSkewProtectionFunctionOptions {
      */
     cookieName?: string;
     /**
+     * @default: "/"
+     */
+    cookiePath?: string;
+    /**
      * @default 86400000
      */
     cookieMaxAgeInMs?: number;
@@ -153,6 +157,7 @@ export function createSkewProtectionFunction(entrypoints: string[], options: Cre
         secretEnvironmentVariableName = SecretEnvironmentVariable,
         basicAuthPasswordEnvironmentVariableName = BasicAuthPasswordEnvironmentVariableName,
         cookieName = CookieName,
+        cookiePath = "/",
         // Expires in 1 day.
         cookieMaxAgeInMs = 1000 * 60 * 60 * 24,
         debug = false
@@ -189,6 +194,7 @@ export function createSkewProtectionFunction(entrypoints: string[], options: Cre
 
                 context.cookies.set({
                     name: cookieName,
+                    path: cookiePath,
                     // Cookie size is about 114 bytes.
                     value: await sign({ id: context.deploy.id, ts: Date.now() }, secret),
                     httpOnly: true,
