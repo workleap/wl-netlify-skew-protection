@@ -8,6 +8,14 @@ export const CookieName = "nf_sp";
 
 export interface CreateSkewProtectionFunctionOptions {
     /**
+     * Name of the files that should be considered entrypoints, and that should
+     * set a skew protection cookie.
+     *
+     * If you're building a SPA, you can leave this empty since we use the
+     * `Accept: text/html` header to determine if the request is a page load.
+     */
+    entrypoints?: string[];
+    /**
      * We don't want users to be able to access very old versions of the site, so
      * the cookie is signed with HMAC to prevent tampering.
      * The secret must be configured as an environment variable of the Netlify site
@@ -148,8 +156,9 @@ function rerouteRequest(target: URL, originalRequest: Request) {
     return fetch(target, originalRequest);
 }
 
-export function createSkewProtectionFunction(entrypoints: string[], options: CreateSkewProtectionFunctionOptions = {}) {
+export function createSkewProtectionFunction(options: CreateSkewProtectionFunctionOptions = {}) {
     const {
+        entrypoints = [],
         secretEnvironmentVariableName = SecretEnvironmentVariable,
         basicAuthPasswordEnvironmentVariableName = BasicAuthPasswordEnvironmentVariableName,
         cookieName = CookieName,
