@@ -82,7 +82,7 @@ importers:
         specifier: 3.1.1
         version: 3.1.1(@types/debug@4.1.12)(@types/node@22.15.17)(jiti@2.4.2)(msw@2.7.3(@types/node@22.15.17)(typescript@5.8.3))(yaml@2.7.1)
 
-  samples/spa:
+  samples/netlify-cd:
     dependencies:
       '@hopper-ui/components':
         specifier: 1.5.9
@@ -115,6 +115,9 @@ importers:
       '@rsbuild/core':
         specifier: 1.3.4
         version: 1.3.4
+      '@rslib/core':
+        specifier: 0.6.9
+        version: 0.6.9(typescript@5.8.3)
       '@rspack/core':
         specifier: 1.3.2
         version: 1.3.2(@swc/helpers@0.5.17)
@@ -158,7 +161,7 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
-  samples/spa-cd:
+  samples/spa:
     dependencies:
       '@hopper-ui/components':
         specifier: 1.5.9
@@ -191,9 +194,6 @@ importers:
       '@rsbuild/core':
         specifier: 1.3.4
         version: 1.3.4
-      '@rslib/core':
-        specifier: 0.6.9
-        version: 0.6.9(typescript@5.8.3)
       '@rspack/core':
         specifier: 1.3.2
         version: 1.3.2(@swc/helpers@0.5.17)
@@ -9190,7 +9190,7 @@ snapshots:
       p-filter: 4.1.0
       p-locate: 6.0.0
       read-pkg-up: 9.1.0
-      semver: 7.7.2
+      semver: 7.7.1
 
   '@netlify/functions-utils@5.3.18(rollup@4.40.2)(supports-color@9.4.0)':
     dependencies:
@@ -9362,7 +9362,7 @@ snapshots:
       precinct: 11.0.5(supports-color@9.4.0)
       require-package-name: 2.0.1
       resolve: 2.0.0-next.5
-      semver: 7.7.2
+      semver: 7.7.1
       tmp-promise: 3.0.3
       toml: 3.0.0
       unixify: 1.0.0
@@ -11271,7 +11271,7 @@ snapshots:
       debug: 4.4.0(supports-color@9.4.0)
       globby: 11.1.0
       is-glob: 4.0.3
-      semver: 7.7.2
+      semver: 7.7.1
       tsutils: 3.21.0(typescript@5.8.3)
     optionalDependencies:
       typescript: 5.8.3
@@ -14397,7 +14397,7 @@ snapshots:
       jest-validate: 27.5.1
       map-obj: 5.0.2
       moize: 6.1.6
-      semver: 7.7.2
+      semver: 7.7.1
 
   log-symbols@4.1.0:
     dependencies:
