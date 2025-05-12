@@ -1,7 +1,6 @@
 [build]
     publish = "samples/spa/dist"
     edge_functions = "samples/spa/netlify/edge-functions"
-    command = "pnpm build-spa"
 
 [[edge_functions]]
     path = "/*"

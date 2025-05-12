@@ -1,0 +1,7 @@
+[build]
+    publish = "samples/manifest/dist"
+    edge_functions = "samples/manifest/netlify/edge-functions"
+
+[[edge_functions]]
+    path = "/*"
+    function = "skew-protection"
