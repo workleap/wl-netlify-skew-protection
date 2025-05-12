@@ -7,6 +7,7 @@
     "license": "Apache-2.0",
     "scripts": {
         "dev-sample": "turbo run dev --filter=sample",
+        "dev-docs": "retype start",
         "build-lib": "turbo run build --filter=@workleap/netlify-skew-protection",
         "build-sample": "turbo run build --filter=sample",
         "serve-sample": "turbo run serve-build --filter=sample",
@@ -35,6 +36,7 @@
         "eslint": "8.57.1",
         "netlify-cli": "20.0.3",
         "pkg-pr-new": "0.0.41",
+        "retypeapp": "3.7.0",
         "syncpack": "13.0.3",
         "turbo": "2.5.0",
         "typescript": "5.8.3"
