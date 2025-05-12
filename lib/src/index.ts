@@ -182,9 +182,14 @@ export function createSkewProtectionFunction(entrypoints: string[], options: Cre
 
             const url = new URL(request.url);
 
+            // For SPAs, since any URL pathname could be an entrypoint, we
+            // instead check if the browser is requesting HTML content. If yes,
+            // we can confidently assume that this is a page load request.
+            const isPageLoadRequest = request.headers.get("Accept")?.toLowerCase().includes("text/html");
+
             logDebug("The request URL path name is:", url.pathname);
 
-            if (entrypoints.includes(url.pathname)) {
+            if (entrypoints.includes(url.pathname) || isPageLoadRequest) {
                 logDebug(`One of the provided entrypoint match the request URL path name, writing a cookie with the ${context.deploy.id} deployment id and exiting.`);
 
                 context.cookies.set({
