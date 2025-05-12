@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://workleap.github.io/wl-netlify-skew-protection/sitemap.xml.gz
