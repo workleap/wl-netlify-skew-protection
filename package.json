@@ -23,7 +23,7 @@
         "deploy-spa:deploy": "netlify deploy --prod --site eb01ac17-af8b-4057-828d-2b20476ac7b2 --filter=@samples/spa",
         "deploy-manifest": "pnpm run --sequential \"/^deploy-manifest:.*/\"",
         "deploy-manifest:build-sample": "turbo run build --filter=@samples/manifest",
-        "deploy-manifest:deploy": "netlify deploy --prod --site eb01ac17-af8b-4057-828d-2b20476ac7b2 --filter=@samples/manifest",
+        "deploy-manifest:deploy": "netlify deploy --prod --site e46d2f54-40f6-4d91-9817-92b7637f7b8e --filter=@samples/manifest",
         "lint": "turbo run eslint typecheck syncpack --continue",
         "eslint": "eslint . --ignore-pattern lib --ignore-pattern samples --max-warnings=-0 --cache --cache-location node_modules/.cache/eslint",
         "typecheck": "tsc",
