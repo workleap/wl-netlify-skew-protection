@@ -19,6 +19,8 @@ beforeAll(() => {
     } as unknown as typeof global["Netlify"];
 });
 
+// TODO: Missing tests for spa mode.
+
 test("when an entrypoint is requested, skew protection cookie is set", async ({ expect }) => {
     // Setup the request and context.
     const request = new Request("https://example.com/manifest.json");

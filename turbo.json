@@ -16,6 +16,10 @@
             "cache": false,
             "persistent": true
         },
+        //
+        "deploy-sample": {
+
+        },
         "//#eslint": {
             "outputs": ["node_modules/.cache/eslint"]
         },
