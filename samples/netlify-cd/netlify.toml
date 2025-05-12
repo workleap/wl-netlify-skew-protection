@@ -1,8 +1,0 @@
-[build]
-    publish = "samples/netlify-cd/dist/app"
-    edge_functions = "samples/netlify-cd/dist/netlify/edge-functions"
-    command = "pnpm build-netlify-cd"
-
-[[edge_functions]]
-    path = "/*"
-    function = "skew-protection"
