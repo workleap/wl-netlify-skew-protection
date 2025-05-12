@@ -1,7 +1,6 @@
 [build]
     publish = "samples/manifest/dist"
     edge_functions = "samples/manifest/netlify/edge-functions"
-    command = "pnpm build-manifest"
 
 [[edge_functions]]
     path = "/*"
