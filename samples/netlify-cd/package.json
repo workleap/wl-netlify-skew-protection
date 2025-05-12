@@ -1,5 +1,5 @@
 {
-    "name": "@samples/spa-cd",
+    "name": "@samples/netlify-cd",
     "version": "0.0.0",
     "private": true,
     "type": "module",

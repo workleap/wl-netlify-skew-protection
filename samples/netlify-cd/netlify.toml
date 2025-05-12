@@ -1,7 +1,7 @@
 [build]
-    publish = "sample/dist/app"
-    edge_functions = "sample/dist/netlify/edge-functions"
-    command = "pnpm build-sample"
+    publish = "samples/netlify-cd/dist/app"
+    edge_functions = "samples/netlify-cd/dist/netlify/edge-functions"
+    command = "pnpm build-netlify-cd"
 
 [[headers]]
     for = "/index.html"
