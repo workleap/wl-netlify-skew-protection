@@ -7,7 +7,7 @@
     "license": "Apache-2.0",
     "scripts": {
         "dev-spa": "turbo run dev --filter=@samples/spa",
-        "dev-netlify-cd": "turbo run dev --filter=@samples/netlify-cd-cd",
+        "dev-netlify-cd": "turbo run dev --filter=@samples/netlify-cd",
         "dev-docs": "retype start",
         "build-lib": "turbo run build --filter=@workleap/netlify-skew-protection",
         "build-samples": "turbo run build --filter=@samples/*",
