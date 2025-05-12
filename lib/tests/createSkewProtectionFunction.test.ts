@@ -36,7 +36,8 @@ test("when an entrypoint is requested, skew protection cookie is set", async ({ 
     };
 
     // Create the skew protection function.
-    const fct = createSkewProtectionFunction(["/manifest.json"], {
+    const fct = createSkewProtectionFunction({
+        entrypoints: ["/manifest.json"],
         secretEnvironmentVariableName: SecretKey
     });
 
@@ -79,7 +80,8 @@ test("when the resource is requested with a cookie already set, load the file fr
     };
 
     // Create the skew protection function.
-    const fct = createSkewProtectionFunction(["/manifest.json"], {
+    const fct = createSkewProtectionFunction({
+        entrypoints: ["/manifest.json"],
         secretEnvironmentVariableName: SecretKey
     });
 

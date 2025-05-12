@@ -1,7 +1,5 @@
 import { config, createSkewProtectionFunction } from "@workleap/netlify-skew-protection";
 
-const fct = createSkewProtectionFunction(["/", "/index.html"], {
-    debug: true
-});
+const fct = createSkewProtectionFunction({ debug: true });
 
 export { config, fct as default };
