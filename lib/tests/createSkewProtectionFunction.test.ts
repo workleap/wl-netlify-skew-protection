@@ -19,6 +19,162 @@ beforeAll(() => {
     } as unknown as typeof global["Netlify"];
 });
 
+describe("spa mode", () => {
+    test("when an html file is requested, skew protection cookie is set", async ({ expect }) => {
+        // Setup the request and context.
+        const request = new Request("https://example.com/index.html", {
+            headers: {
+                "Accept": "text/html"
+            }
+        });
+        const cookies: Cookie[] = [];
+        const context = {
+            deploy: {
+                id: "deploy-id",
+                published: true
+            },
+            cookies: {
+                set(input: Cookie) {
+                    cookies.push(input);
+                }
+            }
+        };
+
+        // Create the skew protection function.
+        const fct = createSkewProtectionFunction("spa", {
+            secretEnvironmentVariableName: SecretKey
+        });
+
+        // Execute the skew protection function.
+        await fct(request, context as unknown as Context);
+
+        // Check that the cookie is set.
+        expect(cookies).toHaveLength(1);
+        const cookie = cookies[0];
+        expect(cookie.name).toBe(CookieName);
+        expect(cookie.value).toBeDefined();
+
+        // Check that the cookie is signed properly
+        const deploy = await verifySignature(cookie.value, Secret);
+        expect(deploy).toBeDefined();
+        expect(deploy!.id).toBe("deploy-id");
+        expect(deploy!.ts).toBeDefined();
+    });
+
+    test("when the resource is requested with a cookie already set, load the file from correct deploy", async ({ expect, onTestFinished }) => {
+        // Setup a mock server to simulate the resource request
+        const server = setupServer(http.get("https://previous-deploy-id--site-name.netlify.app/file.js", () => Response.json({ success: true })));
+        server.listen();
+        onTestFinished(() => server.close());
+
+        // Setup the request and context.
+        const request = new Request("https://example.com/file.js");
+        const cookie = await sign({ id: "previous-deploy-id", ts: Date.now() }, Secret);
+        const context = {
+            site: {
+                name: "site-name"
+            },
+            deploy: {
+                id: "deploy-id",
+                published: true
+            },
+            cookies: {
+                get: () => cookie
+            }
+        };
+
+        // Create the skew protection function.
+        const fct = createSkewProtectionFunction("spa", {
+            secretEnvironmentVariableName: SecretKey
+        });
+
+        // Execute the skew protection function.
+        const response = await fct(request, context as unknown as Context);
+
+        // Verify reponse.
+        expect(response).toBeDefined();
+        const data = await response!.json();
+        expect(data).toEqual({ success: true });
+    });
+});
+
+describe("federated mode", () => {
+    test("when an entrypoint is requested, skew protection cookie is set", async ({ expect }) => {
+        // Setup the request and context.
+        const request = new Request("https://example.com/index.js");
+        const cookies: Cookie[] = [];
+        const context = {
+            deploy: {
+                id: "deploy-id",
+                published: true
+            },
+            cookies: {
+                set(input: Cookie) {
+                    cookies.push(input);
+                }
+            }
+        };
+
+        // Create the skew protection function.
+        const fct = createSkewProtectionFunction("federated", {
+            entrypoints: ["/index.js"],
+            secretEnvironmentVariableName: SecretKey
+        });
+
+        // Execute the skew protection function.
+        await fct(request, context as unknown as Context);
+
+        // Check that the cookie is set.
+        expect(cookies).toHaveLength(1);
+        const cookie = cookies[0];
+        expect(cookie.name).toBe(CookieName);
+        expect(cookie.value).toBeDefined();
+
+        // Check that the cookie is signed properly
+        const deploy = await verifySignature(cookie.value, Secret);
+        expect(deploy).toBeDefined();
+        expect(deploy!.id).toBe("deploy-id");
+        expect(deploy!.ts).toBeDefined();
+    });
+
+    test("when the resource is requested with a cookie already set, load the file from correct deploy", async ({ expect, onTestFinished }) => {
+        // Setup a mock server to simulate the resource request
+        const server = setupServer(http.get("https://previous-deploy-id--site-name.netlify.app/file.js", () => Response.json({ success: true })));
+        server.listen();
+        onTestFinished(() => server.close());
+
+        // Setup the request and context.
+        const request = new Request("https://example.com/file.js");
+        const cookie = await sign({ id: "previous-deploy-id", ts: Date.now() }, Secret);
+        const context = {
+            site: {
+                name: "site-name"
+            },
+            deploy: {
+                id: "deploy-id",
+                published: true
+            },
+            cookies: {
+                get: () => cookie
+            }
+        };
+
+        // Create the skew protection function.
+        const fct = createSkewProtectionFunction("federated", {
+            entrypoints: ["/index.js"],
+            secretEnvironmentVariableName: SecretKey
+        });
+
+        // Execute the skew protection function.
+        const response = await fct(request, context as unknown as Context);
+
+        // Verify reponse.
+        expect(response).toBeDefined();
+        const data = await response!.json();
+        expect(data).toEqual({ success: true });
+    });
+});
+
 describe("manifest mode", () => {
     test("when an entrypoint is requested, skew protection cookie is set", async ({ expect }) => {
         // Setup the request and context.

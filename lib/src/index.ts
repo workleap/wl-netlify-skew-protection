@@ -10,7 +10,7 @@ export const CookiePath = "/";
 // Expires in 1 day.
 export const CookieMaxAge = 1000 * 60 * 60 * 24;
 
-export type Mode = "spa" | "federation" | "manifest";
+export type Mode = "spa" | "federated" | "manifest";
 
 export interface CreateSkewProtectionFunctionOptions {
     /**
@@ -136,6 +136,12 @@ export function createSkewProtectionFunction(mode: Mode, options: CreateSkewProt
 
             if (!secret) {
                 console.error(`The edge function is not installed properly. Missing or invalid env variable. Did you configured a env variabled named "${secretEnvironmentVariableName}" for your Netlify site?`);
+
+                return;
+            }
+
+            if (mode === "spa" && entrypoints.length > 0) {
+                console.error(`When the edge function is operating in "${mode}" mode, the entrypoints of the application must not be provided as options of the "createSkewProtectionFunction" function.`);
 
                 return;
             }

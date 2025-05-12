@@ -1,0 +1,44 @@
+{
+    "name": "@samples/spa-cd",
+    "version": "0.0.0",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "rsbuild dev --config ./rsbuild.dev.ts",
+        "build": "pnpm run --sequential \"/^build:.*/\"",
+        "build:cdn": "rsbuild build --config rsbuild.build.ts",
+        "build:edge-functions": "rslib build --config rslib.edge-functions.ts",
+        "serve-build": "pnpm http-server dist -p 8080 -P http://localhost:8080? -c-1",
+        "eslint": "eslint . --max-warnings=-0 --cache --cache-location node_modules/.cache/eslint",
+        "typecheck": "tsc"
+    },
+    "dependencies": {
+        "@hopper-ui/components": "1.5.9",
+        "@hopper-ui/icons": "2.9.2",
+        "@hopper-ui/styled-system": "2.5.6",
+        "@hopper-ui/svg-icons": "2.18.0",
+        "react": "19.1.0",
+        "react-aria": "3.38.1",
+        "react-aria-components": "1.7.1",
+        "react-dom": "19.1.0",
+        "react-router": "7.5.0"
+    },
+    "devDependencies": {
+        "@rsbuild/core": "1.3.4",
+        "@rslib/core": "0.6.9",
+        "@rspack/core": "1.3.2",
+        "@types/react": "19.1.0",
+        "@types/react-dom": "19.1.1",
+        "@typescript-eslint/parser": "8.29.0",
+        "@workleap/browserslist-config": "2.0.3",
+        "@workleap/eslint-plugin": "3.3.2",
+        "@workleap/netlify-skew-protection": "workspace:*",
+        "@workleap/rsbuild-configs": "3.0.0",
+        "@workleap/typescript-configs": "3.0.3",
+        "browserslist": "4.24.4",
+        "eslint": "8.57.1",
+        "http-server": "14.1.1",
+        "prettier": "3.5.3",
+        "typescript": "5.8.3"
+    }
+}
