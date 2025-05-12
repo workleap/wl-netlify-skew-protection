@@ -18,7 +18,7 @@ export default {
             "label": "Lib should pin devDependencies."
         },
         {
-            "packages": ["sample"],
+            "packages": ["@samples/*"],
             "dependencyTypes": ["prod", "dev"],
             "range": "",
             "label": "Sample should pin dependencies and devDependencies."

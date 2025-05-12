@@ -54,8 +54,8 @@ jobs:
       - name: Build library
         run: pnpm build-lib
 
-      - name: Build sample
-        run: pnpm build-sample
+      - name: Build samples
+        run: pnpm build-samples
 
       - name: Save Turborepo cache
         id: cache-turborepo-save
