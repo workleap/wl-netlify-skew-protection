@@ -32,7 +32,7 @@
     },
     "dependencies": {
         "@netlify/edge-functions": "^2.12.0",
-        "nanoid": "5.1.5"
+        "nanoid": "^5.1.5"
     },
     "devDependencies": {
         "@rslib/core": "0.6.1",
