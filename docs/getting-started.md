@@ -87,7 +87,7 @@ The example above assumes that the application's entry point is `index.html`. If
 
 ### Register the Edge Function
 
-Now, let’s register the Edge Function with Netlify. If the project doesn't already include a `netlify.toml` file, create one at the root of the project:
+Now, let's register the Edge Function with Netlify. If the project doesn't already include a `netlify.toml` file, create one at the root of the project:
 
 ``` !#4
 web-project
@@ -112,7 +112,7 @@ Then, open the `netlify.toml` file and add/replace the following configuration t
 
 If your application is deployed using a combination of an Azure DevOps pipeline or a GitHub Action along with the Netlify CLI, you're all set, no additional steps are required to build the Edge Function.
 
-However, if your application is built and deployed using [Netlify Continuous Deployment](https://www.netlify.com/blog/enhance-your-development-workflow-with-continuous-deployment), an existing [limitation](https://developers.netlify.com/sdk/edge-functions/get-started#limitations) in Netlify’s Edge Function support for imported NPM packages requires additional steps. In this case, you'll need to explicitly build the Edge Function using [Rslib](https://lib.rsbuild.dev/).
+However, if your application is built and deployed using [Netlify Continuous Deployment](https://www.netlify.com/blog/enhance-your-development-workflow-with-continuous-deployment), an existing [limitation](https://developers.netlify.com/sdk/edge-functions/get-started#limitations) in Netlify's Edge Function support for imported NPM packages requires additional steps. In this case, you'll need to explicitly build the Edge Function using [Rslib](https://lib.rsbuild.dev/).
 
 #### Rslib
 
@@ -199,7 +199,7 @@ Finally, update the project's `package.json` file to build both, the application
 }
 ```
 
-#### The esm.sh alternative
+#### esm.sh alternative
 
 Using [esm.sh](https://esm.sh/) to import the package is a more straightforward approach, but it introduces an additional third-party dependency. To load the [@workleap/netlify-skew-protection](https://www.npmjs.com/package/@workleap/netlify-skew-protection) package via `esm.sh`, you can use the following import directly in your Edge Function:
 
@@ -255,6 +255,6 @@ To verify that Skew Protection is working as expected, follow these steps:
 
 - If the logs indicate that the Edge Function isn't installed correctly, it's likely because the `SKEW_PROTECTION_SECRET` environment variable is missing from the Netlify site's configuration.
 
-- If requests to previous deploy assets aren't being re-routed as expected, enable the [debug](./available-options.md#debug) option, redeploy the Edge Function, and inspect the [Edge Functions logs](https://docs.netlify.com/edge-functions/get-started/#monitor) for details.
+- If requests to previous deploy assets aren't being re-routed as expected, enable the [verbose](./available-options.md#verbose) option, redeploy the Edge Function, and inspect the [Edge Functions logs](https://docs.netlify.com/edge-functions/get-started/#monitor) for details.
 
 
