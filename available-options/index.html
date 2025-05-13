@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-netlify-skew-protection">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.8.1.800481804730">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.8.1.800483084573">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.8.1">
@@ -12,7 +12,7 @@
     <!-- Primary Meta Tags -->
     <title>Available options</title>
     <meta name="title" content="Available options">
-    <meta name="description" content="TBD">
+    <meta name="description" content="Specifies the name of the environment variable that holds the secret used for signing the cookie with HMAC encryption to prevent tampering.">
 
     <!-- Canonical -->
     <link rel="canonical" href="https://workleap.github.io/wl-netlify-skew-protection/available-options/">
@@ -21,22 +21,23 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://workleap.github.io/wl-netlify-skew-protection/available-options/">
     <meta property="og:title" content="Available options">
-    <meta property="og:description" content="TBD">
+    <meta property="og:description" content="Specifies the name of the environment variable that holds the secret used for signing the cookie with HMAC encryption to prevent tampering.">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://workleap.github.io/wl-netlify-skew-protection/available-options/">
     <meta property="twitter:title" content="Available options">
-    <meta property="twitter:description" content="TBD">
+    <meta property="twitter:description" content="Specifies the name of the environment variable that holds the secret used for signing the cookie with HMAC encryption to prevent tampering.">
 
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../static/favicon.png" rel="icon">
-    <link href="../resources/css/retype.css?v=3.8.1.800481804730" rel="stylesheet">
+    <link href="../resources/css/retype.css?v=3.8.1.800483084573" rel="stylesheet">
 
-    <script data-cfasync="false" src="../resources/js/config.js?v=3.8.1.800481804730" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../resources/js/config.js?v=3.8.1.800483084573" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../resources/js/retype.js?v=3.8.1" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=3.8.1.800481804730" data-turbo-eval="false" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=3.8.1.800483084573" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../resources/js/prism.js?v=3.8.1.800483084573" defer></script>
 
     <link href="https://workleap.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -288,35 +289,65 @@
         <span><code v-pre>secretEnvironmentVariableName</code></span>
     </h2>
 </doc-anchor-target>
-<p>TBD</p>
+<p>Specifies the name of the environment variable that holds the secret used for signing the cookie with HMAC encryption to prevent tampering. To override the default value, use the <code v-pre>secretEnvironmentVariableName</code> option:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">skew-protection.ts</div>
+<pre class="language-typescript" data-line="2"><code v-pre class="language-typescript">createSkewProtectionFunction(&quot;spa&quot;, {
+    secretEnvironmentVariableName: &quot;HMAC_SECRET&quot;
+});</code></pre>
+</doc-codeblock></div>
 <doc-anchor-target id="cookiename">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#cookiename">#</doc-anchor-trigger>
         <span><code v-pre>cookieName</code></span>
     </h2>
 </doc-anchor-target>
-<p>TBD</p>
+<p>Defines the name of the cookie that stores the deploy ID associated with the user&#x27;s session. To change the cookie name, use the <code v-pre>cookieName</code> option:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">skew-protection.ts</div>
+<pre class="language-typescript" data-line="2"><code v-pre class="language-typescript">createSkewProtectionFunction(&quot;spa&quot;, {
+    cookieName: &quot;my_app_sp&quot;
+});</code></pre>
+</doc-codeblock></div>
 <doc-anchor-target id="cookiepath">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#cookiepath">#</doc-anchor-trigger>
         <span><code v-pre>cookiePath</code></span>
     </h2>
 </doc-anchor-target>
-<p>TBD</p>
+<p>Specifies the cookie path for the deployment ID cookie associated with the user session. To change the cookie path, use the <code v-pre>cookiePath</code> option:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">skew-protection.ts</div>
+<pre class="language-typescript" data-line="2"><code v-pre class="language-typescript">createSkewProtectionFunction(&quot;spa&quot;, {
+    cookiePath: &quot;/my-app&quot;
+});</code></pre>
+</doc-codeblock></div>
 <doc-anchor-target id="cookiemaxageinms">
     <h2>
         <doc-anchor-trigger class="header-anchor-trigger" to="#cookiemaxageinms">#</doc-anchor-trigger>
         <span><code v-pre>cookieMaxAgeInMs</code></span>
     </h2>
 </doc-anchor-target>
-<p>TBD</p>
-<doc-anchor-target id="debug">
+<p>Sets the maximum age (in milliseconds) of the cookie holding the deployment ID. To customize the expiration, use the <code v-pre>cookieMaxAgeInMs</code> option:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">skew-protection.ts</div>
+<pre class="language-typescript" data-line="2"><code v-pre class="language-typescript">createSkewProtectionFunction(&quot;spa&quot;, {
+    cookieMaxAgeInMs: 1000 * 60 * 30 * 24
+});</code></pre>
+</doc-codeblock></div>
+<doc-anchor-target id="verbose">
     <h2>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#debug">#</doc-anchor-trigger>
-        <span><code v-pre>debug</code></span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#verbose">#</doc-anchor-trigger>
+        <span><code v-pre>verbose</code></span>
     </h2>
 </doc-anchor-target>
-<p>TBD</p>
+<p>Enables additional logging in the <a href="https://docs.netlify.com/edge-functions/get-started/#monitor" class="outbound" target="_blank">Edge Functions logs</a> to assist with troubleshooting. To enable verbose logging, set the <code v-pre>verbose</code> option to <code v-pre>true</code>:</p>
+<div class="codeblock-wrapper"><doc-codeblock>
+<div class="codeblock-title">skew-protection.ts</div>
+<pre class="language-typescript" data-line="2"><code v-pre class="language-typescript">createSkewProtectionFunction(&quot;spa&quot;, {
+    verbose: true
+});</code></pre>
+</doc-codeblock></div>
 
                                 
                                 <!-- Required only on API pages -->
@@ -402,6 +433,6 @@
 
     <div id="docs-overlay-target"></div>
 
-    <script data-cfasync="false">window.__DOCS__ = { "title": "Available options", level: 1, icon: "file", hasPrism: false, hasMermaid: false, hasMath: false, tocDepth: 2 }</script>
+    <script data-cfasync="false">window.__DOCS__ = { "title": "Available options", level: 1, icon: "file", hasPrism: true, hasMermaid: false, hasMath: false, tocDepth: 2 }</script>
 </body>
 </html>

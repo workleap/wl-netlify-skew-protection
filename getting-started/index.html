@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-netlify-skew-protection">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.8.1.800481804730">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.8.1.800483084573">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.8.1">
@@ -34,12 +34,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../static/favicon.png" rel="icon">
-    <link href="../resources/css/retype.css?v=3.8.1.800481804730" rel="stylesheet">
+    <link href="../resources/css/retype.css?v=3.8.1.800483084573" rel="stylesheet">
 
-    <script data-cfasync="false" src="../resources/js/config.js?v=3.8.1.800481804730" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../resources/js/config.js?v=3.8.1.800483084573" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../resources/js/retype.js?v=3.8.1" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=3.8.1.800481804730" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../resources/js/prism.js?v=3.8.1.800481804730" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=3.8.1.800483084573" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../resources/js/prism.js?v=3.8.1.800483084573" defer></script>
 
     <link href="https://workleap.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -418,7 +418,7 @@ export { config, fct as default };</code></pre>
         <span>Register the Edge Function</span>
     </h3>
 </doc-anchor-target>
-<p>Now, let’s register the Edge Function with Netlify. If the project doesn&#x27;t already include a <code v-pre>netlify.toml</code> file, create one at the root of the project:</p>
+<p>Now, let&#x27;s register the Edge Function with Netlify. If the project doesn&#x27;t already include a <code v-pre>netlify.toml</code> file, create one at the root of the project:</p>
 <div class="codeblock-wrapper"><doc-codeblock>
 <pre class="language-none" data-line="4"><code v-pre class="language-none">web-project
 ├── netlify
@@ -443,7 +443,7 @@ export { config, fct as default };</code></pre>
     </h3>
 </doc-anchor-target>
 <p>If your application is deployed using a combination of an Azure DevOps pipeline or a GitHub Action along with the Netlify CLI, you&#x27;re all set, no additional steps are required to build the Edge Function.</p>
-<p>However, if your application is built and deployed using <a href="https://www.netlify.com/blog/enhance-your-development-workflow-with-continuous-deployment" class="outbound" target="_blank">Netlify Continuous Deployment</a>, an existing <a href="https://developers.netlify.com/sdk/edge-functions/get-started#limitations" class="outbound" target="_blank">limitation</a> in Netlify’s Edge Function support for imported NPM packages requires additional steps. In this case, you&#x27;ll need to explicitly build the Edge Function using <a href="https://lib.rsbuild.dev/" class="outbound" target="_blank">Rslib</a>.</p>
+<p>However, if your application is built and deployed using <a href="https://www.netlify.com/blog/enhance-your-development-workflow-with-continuous-deployment" class="outbound" target="_blank">Netlify Continuous Deployment</a>, an existing <a href="https://developers.netlify.com/sdk/edge-functions/get-started#limitations" class="outbound" target="_blank">limitation</a> in Netlify&#x27;s Edge Function support for imported NPM packages requires additional steps. In this case, you&#x27;ll need to explicitly build the Edge Function using <a href="https://lib.rsbuild.dev/" class="outbound" target="_blank">Rslib</a>.</p>
 <doc-anchor-target id="rslib">
     <h4>
         <doc-anchor-trigger class="header-anchor-trigger" to="#rslib">#</doc-anchor-trigger>
@@ -557,10 +557,10 @@ export default defineConfig({
     &quot;build:edge-functions&quot;: &quot;rslib build --config rslib.edge-functions.ts&quot;
 }</code></pre>
 </doc-codeblock></div>
-<doc-anchor-target id="the-esmsh-alternative">
+<doc-anchor-target id="esmsh-alternative">
     <h4>
-        <doc-anchor-trigger class="header-anchor-trigger" to="#the-esmsh-alternative">#</doc-anchor-trigger>
-        <span>The esm.sh alternative</span>
+        <doc-anchor-trigger class="header-anchor-trigger" to="#esmsh-alternative">#</doc-anchor-trigger>
+        <span>esm.sh alternative</span>
     </h4>
 </doc-anchor-target>
 <p>Using <a href="https://esm.sh/" class="outbound" target="_blank">esm.sh</a> to import the package is a more straightforward approach, but it introduces an additional third-party dependency. To load the <a href="https://www.npmjs.com/package/@workleap/netlify-skew-protection" class="outbound" target="_blank">@workleap/netlify-skew-protection</a> package via <code v-pre>esm.sh</code>, you can use the following import directly in your Edge Function:</p>
@@ -655,7 +655,7 @@ export default defineConfig({
 </li>
 <li><p>If the logs indicate that the Edge Function isn&#x27;t installed correctly, it&#x27;s likely because the <code v-pre>SKEW_PROTECTION_SECRET</code> environment variable is missing from the Netlify site&#x27;s configuration.</p>
 </li>
-<li><p>If requests to previous deploy assets aren&#x27;t being re-routed as expected, enable the <a href="../available-options/#debug">debug</a> option, redeploy the Edge Function, and inspect the <a href="https://docs.netlify.com/edge-functions/get-started/#monitor" class="outbound" target="_blank">Edge Functions logs</a> for details.</p>
+<li><p>If requests to previous deploy assets aren&#x27;t being re-routed as expected, enable the <a href="../available-options/#verbose">verbose</a> option, redeploy the Edge Function, and inspect the <a href="https://docs.netlify.com/edge-functions/get-started/#monitor" class="outbound" target="_blank">Edge Functions logs</a> for details.</p>
 </li>
 </ul>
 
