@@ -9,7 +9,7 @@ Welcome to the Netlify Skew Protection package documentation, a library designed
 
 ## Problem
 
-When deploying a new version of a static frontend application, users who are still browsing the previous version may encounter `404` errors for static assets like JavaScript or CSS files. This happens because the new deployment instantly replaces the old one, but users' files still references asset filenames that were unique to the previous deployment. As a result, when a user navigates to a page during this transition, the browser requests files **may no longer exist**, leading to broken pages and degraded user experience. At Workleap, version skew most commonly occurs with [lazy-loaded routes](https://react.dev/reference/react/lazy).
+When deploying a new version of a static frontend application, users who are still browsing the previous version may encounter `404` errors for static assets like JavaScript or CSS files. This happens because the new deployment instantly replaces the old one, but users' files still reference asset filenames that were unique to the previous deployment. As a result, when a user navigates to a page during this transition, the browser requests files **may no longer exist**, leading to broken pages and degraded user experience. At Workleap, version skew most commonly occurs with [lazy-loaded routes](https://react.dev/reference/react/lazy).
 
 ## Solution
 
