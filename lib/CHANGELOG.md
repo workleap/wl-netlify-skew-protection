@@ -1,5 +1,11 @@
 # @workleap/netlify-skew-protection
 
+## 0.0.4
+
+### Patch Changes
+
+- [#20](https://github.com/workleap/wl-netlify-skew-protection/pull/20) [`78db136`](https://github.com/workleap/wl-netlify-skew-protection/commit/78db136aa3d1de179cee5199bb5c93588ca8b5cb) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Multiple fixes and introducing an operation "mode" arg.
+
 ## 0.0.3
 
 ### Patch Changes
