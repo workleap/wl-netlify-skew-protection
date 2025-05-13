@@ -8,11 +8,11 @@ icon: gear
 
 TBD
 
-## `basicAuthPasswordEnvironmentVariableName`
+## `cookieName`
 
 TBD
 
-## `cookieName`
+## `cookiePath`
 
 TBD
 

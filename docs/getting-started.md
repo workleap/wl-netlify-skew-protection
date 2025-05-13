@@ -5,25 +5,30 @@ icon: rocket
 
 # Getting started
 
-Welcome to the Netlify Skew Protection package documentation, a library to seamlessly add a [Skew Protection](https://www.industrialempathy.com/posts/version-skew/) feature to your [Netlify](https://www.netlify.com/) site. On this page, you'll discover how this package can help avoir version skew and learn how to set it up.
+Welcome to the Netlify Skew Protection package documentation, a library designed to seamlessly implement [Skew Protection](https://www.industrialempathy.com/posts/version-skew/) on your [Netlify](https://www.netlify.com/) site. This guide will show you how the package works to prevent version skew issues in your application and walk you through the steps to get it set up.
 
 ## Problem
 
-When deploying a new version of a static site, users who are still browsing the previous version may encounter `404` errors for static assets like JavaScript or CSS files. This happens because the new deployment instantly replaces the old one at the entry point, but users' files still references asset filenames that were unique to the previous build. As a result, when a user navigates to a page during this transition, the browser requests files may no longer exist, leading to broken pages and degraded user experience.
-
-At Workleap, version skew most commonly occurs with [lazy-loaded routes](https://react.dev/reference/react/lazy).
+When deploying a new version of a static frontend application, users who are still browsing the previous version may encounter `404` errors for static assets like JavaScript or CSS files. This happens because the new deployment instantly replaces the old one, but users' files still references asset filenames that were unique to the previous deployment. As a result, when a user navigates to a page during this transition, the browser requests files **may no longer exist**, leading to broken pages and degraded user experience. At Workleap, version skew most commonly occurs with [lazy-loaded routes](https://react.dev/reference/react/lazy).
 
 ## Solution
 
-Skew Protection addresses this by maintaining a consistent experience for each user session. It does so by assigning a cookie when a user first fetch the entry point, tying that session to a specific deployment id. All subsequent asset requests are routed to that specific deploy URL (e.g., https://deploy-id--your-site.netlify.app), ensuring that users always receive the correct asset versions associated with the entry point they were served. This prevents asset mismatches and eliminates `404` errors caused by mid-session deploy transitions, resulting in smoother, safer releases.
+Skew Protection addresses this by maintaining a consistent experience for each user session. It does so by **assigning a cookie when** a user first fetch the entry point, **tying** that **session** to a specific **deployment id**. All subsequent asset requests are routed to that specific deploy URL (e.g., `https://deploy-id--your-site.netlify.app`), ensuring that users always receive the correct asset versions associated with the deployment they were served initially. This prevents asset mismatches and eliminates `404` errors caused by mid-session deploy transitions, resulting in smoother, safer releases.
 
 ## Set up Skew Protection
 
-Let's [create an edge function](#create-the-edge-function), then [register the edge function](#register-the-edge-function), [build the edge function](#build-the-edge-function), and finally [configure the Netlify site](#configure-the-netlify-site).
+To enable Skew Protection on your Netlify site, you'll need to follow four key steps:
 
-### Create the edge function
+1. [Create the Edge Function](#create-the-edge-function)
+2. [Register the Edge Function](#register-the-edge-function)
+3. [Build the Edge Function](#build-the-edge-function)
+4. [Provide a secret](#provide-a-secret)
 
-First, open a terminal at the root of the web application project that will include the Netlify [edge function](https://docs.netlify.com/edge-functions/overview/) and install the following packages:
+### Create the Edge Function
+
+Netlify's mechanism for intercepting and rerouting CDN requests is called [Edge Functions](https://docs.netlify.com/edge-functions/overview/). They act as middleware between incoming requests and your site's static files.
+
+First, open a terminal at the root of the project where you'll define the Edge Function. Then install the following package:
 
 +++ pnpm
 ```bash
@@ -43,7 +48,7 @@ npm install -D @workleap/netlify-skew-protection
 While you can use any package manager to develop an application with Squide, it is highly recommended that you use PNPM as the guides has been developed and tested with PNPM.
 !!!
 
-Then, create the edge function under a `netlify` folder and name the file `skew-protection.ts` (yes the file will be in TypeScript):
+Next, create a `netlify` folder at the root of the project and add a file named `skew-protection.ts`:
 
 ``` !#2-3
 web-project
@@ -52,25 +57,37 @@ web-project
 ├── package.json
 ```
 
-Finally, open the `skew-protection.ts` file and paste the following content:
+Finally, open the `skew-protection.ts` file and paste in the contents for either [SPA mode](#spa-mode) or [entrypoints ](#entrypoints-mode), depending on the context of your application.
+
+#### SPA mode
 
 ```ts skew-protection.ts
 import { config, createSkewProtectionFunction } from "@workleap/netlify-skew-protection";
 
-const fct = createSkewProtectionFunction(["/", "/index.html"]);
+const fct = createSkewProtectionFunction("spa");
+
+export { config, fct as default };
+```
+
+#### Entrypoints mode
+
+```ts skew-protection.ts
+import { config, createSkewProtectionFunction } from "@workleap/netlify-skew-protection";
+
+const fct = createSkewProtectionFunction("entrypoints", {
+    entrypoints: ["/"]
+});
 
 export { config, fct as default };
 ```
 
 !!!info
-The previous code :point_up: assumes that the application entry point is a `index.html` file. If the application entry point is different, make sure to replace `/index.html` for the actual entry point of the application.
+The example above assumes that the application's entry point is `index.html`. If your app uses a different entry point, be sure to replace `/` with the correct path.
 !!!
 
-### Register the edge function
+### Register the Edge Function
 
-Now, let's register the edge function with Netlify.
-
-If the application doesn't have a `netlify.toml` file yet, create a new one at the root of the project:
+Now, let’s register the Edge Function with Netlify. If the project doesn't already include a `netlify.toml` file, create one at the root of the project:
 
 ``` !#4
 web-project
@@ -80,7 +97,7 @@ web-project
 ├── package.json
 ```
 
-Open the `netlify.toml` file and register the edge-function by pasting the following content:
+Then, open the `netlify.toml` file and add/replace the following configuration to register the Edge Function:
 
 ``` netlify.toml
 [build]
@@ -91,21 +108,15 @@ Open the `netlify.toml` file and register the edge-function by pasting the follo
     function = "skew-protection"
 ```
 
-### Build the edge function
+### Build the Edge Function
 
-Finally, depending of how the application is deployed to a Netlify site, additional steps might be required.
+If your application is deployed using a combination of an Azure DevOps pipeline or a GitHub Action along with the Netlify CLI, you're all set, no additional steps are required to build the Edge Function.
 
-#### From Netlify CLI
+However, if your application is built and deployed using [Netlify Continuous Deployment](https://www.netlify.com/blog/enhance-your-development-workflow-with-continuous-deployment), an existing [limitation](https://developers.netlify.com/sdk/edge-functions/get-started#limitations) in Netlify’s Edge Function support for imported NPM packages requires additional steps. In this case, you'll need to explicitly build the Edge Function using [Rslib](https://lib.rsbuild.dev/).
 
-If the application is deployed to it's Netlify site using the [Netlify CLI](https://docs.netlify.com/cli/get-started/), your good to go, no additional steps are required.
+#### Rslib
 
-#### From Netlify CD
-
-If the application is deployed to it's Netlify site with the Netlify CD, you might hit a [limitation](https://developers.netlify.com/sdk/edge-functions/get-started#limitations) with the imports of an NPM package in a Netlify edge function. The solution is to either build the edge function manually using [Rslib](#rslib) or importing the NPM package through the intermediate of [esm.sh](#esmsh). 
-
-##### Rslib
-
-First, open a terminal at the root of the web application project that will include the Netlify [edge function](https://docs.netlify.com/edge-functions/overview/) and install the following packages:
+First, open a terminal at the root of the project and install the following dependency:
 
 +++ pnpm
 ```bash
@@ -125,7 +136,7 @@ npm install -D @rslib/core
 While you can use any package manager to develop an application with Squide, it is highly recommended that you use PNPM as the guides has been developed and tested with PNPM.
 !!!
 
-Then, create a `rslib.edge-functions.ts` file at the root of the project:
+Then, create a file named `rslib.edge-functions.ts` at the root of the project:
 
 ``` !#5
 web-project
@@ -136,7 +147,7 @@ web-project
 ├── package.json
 ```
 
-Open the `rslib.edge-functions.ts` file and paste the following content:
+Then, open the `rslib.edge-functions.ts` file and paste the following content:
 
 ```ts rslib.edge-functions.ts
 import { defineConfig } from "@rslib/core";
@@ -163,7 +174,11 @@ export default defineConfig({
 });
 ```
 
-Next, open the `netlify.toml` created earlier and update the `build.edge_functions` property to match the `dist` path of the rslib configuration file:
+!!!warning
+If the build of the application is outputed in the same `dist` path as the edge function, make sure to to output the application files in a subfolder like `dist/app` rather than the root of the `dist` folder.
+!!!
+
+Then, update the `netlify.toml` to point to the new Edge Function build output:
 
 ```!#2 netlify.toml
 [build]
@@ -174,7 +189,7 @@ Next, open the `netlify.toml` created earlier and update the `build.edge_functio
     function = "skew-protection"
 ```
 
-Finally, update the build script of the project to build the edge functions as well:
+Finally, update the project's `package.json` file to build both, the application and the Edge Function:
 
 ```json !#4 package.json
 "scripts": {
@@ -184,48 +199,62 @@ Finally, update the build script of the project to build the edge functions as w
 }
 ```
 
-##### esm.sh
+#### The esm.sh alternative
 
-Importing the NPM package with [esm.sh](https://esm.sh/) is more straightforward but involves an additional third party. To import the [@workleap/netlify-skew-protection](https://www.npmjs.com/package/@workleap/netlify-skew-protection) package using `esm.sh`, import the package of the package for the following code:
+Using [esm.sh](https://esm.sh/) to import the package is a more straightforward approach, but it introduces an additional third-party dependency. To load the [@workleap/netlify-skew-protection](https://www.npmjs.com/package/@workleap/netlify-skew-protection) package via `esm.sh`, you can use the following import directly in your Edge Function:
 
 ```ts skew-protection.ts
 import { config, createSkewProtectionFunction } from "https://esm.sh/@workleap/netlify-skew-protection";
 ```
 
-Since the package is downloaded from a third party server rather than being imported from a `node_modules` folder, the `@workleap/netlify-skew-protection` dependency can be removed from the project `package.json`.
+Since the package is fetched from a third-party CDN instead of being installed locally via `node_modules`, you can safely remove `@workleap/netlify-skew-protection` from the `package.json` file.
 
 !!!info
-The previous example :point_up: always import the latest version of the package. [esm.sh](https://esm.sh/) also support specifying a specific version of the package if needed.
+The example above always pulls the **latest version** of the package. For more predictable behavior, [esm.sh](https://esm.sh/) also supports importing a **specific version**, which is a safer and recommended option for production use.
 !!!
 
-### Configure the Netlify site
+### Provide a secret
 
-Now, generate a new secret using the [OpenSSL CLI](https://docs.openssl.org/3.4/man1/openssl/):
+To secure the [HMAC](https://en.wikipedia.org/wiki/HMAC) signature used by the Skew Protection mechanism, you'll need to generate a new secret. Use the [OpenSSL CLI](https://docs.openssl.org/3.4/man1/openssl/) to create a strong, random value.
+
+Open a Bash terminal (or any terminal compatible with OpenSSL) and run the following command:
 
 ```bash
 openssl rand -base64 32
 ```
 
-Save the generated value and to go the application [Netlify site](https://app.netlify.com/). Add a new environment variabled named `SKEW_PROTECTION_SECRET` and set the generated secret as the value.
+Copy the generated value, then navigate to your project's [Netlify site](https://app.netlify.com/) settings. Add a new environment variable named `SKEW_PROTECTION_SECRET` with the generated secret as its value:
+
+| Variable | Value |
+| --- | --- |
+| `SKEW_PROTECTION_SECRET` | The generated secret. |
 
 ## Try it :rocket:
 
-To test your new set up, follow these steps:
+To verify that Skew Protection is working as expected, follow these steps:
 
-1. Open a browser with the [Dev Tools](https://developer.chrome.com/docs/devtools) opened to the network tab and navigate to your application.
+1. Open a browser with the [Dev Tools](https://developer.chrome.com/docs/devtools) open, and go to the Network tab.
 
-2. Search for the entry point file of the application and take a look at the response headers.
+2. Locate the request for the application's entry point file and inspect the response headers.
 
-3. The response should include a `nf_sp` cookie (or wathever name you choose for the Skew Protection cookie)
+3. You should see a `nf_sp` cookie (or the custom name you configured for the Skew Protection cookie) in the response:
 
-4. Then, navigate to a lazy loaded route and refresh the page and find an asset request. The asset request should include a `nf_sp` cookie.
+:::align-image-left
+![](./static/entrypoint_cookie.png)
+:::
+
+4. Refresh the page, and inspect the request headers of a JS and CSS assets. The request should include the same `nf_sp cookie`, confirming that the session is pinned to the original deploy:
+
+:::align-image-left
+![](./static/asset_cookie.png)
+:::
 
 ### Troubleshoot issues
 
-- If the cookie is not set, troubleshoot the issue using Netlify [edge functions logs](https://docs.netlify.com/edge-functions/get-started/#monitor).
+- If the Skew Protection cookie is not being set, use the [Edge Functions logs](https://docs.netlify.com/edge-functions/get-started/#monitor) in Netlify to investigate the issue.
 
-- If the logs mentions that the edge function is not installed properly, this is probably because the site doesn't include an `SKEW_PROTECTION_SECRET` environment variable. 
+- If the logs indicate that the Edge Function isn't installed correctly, it's likely because the `SKEW_PROTECTION_SECRET` environment variable is missing from the Netlify site's configuration.
 
-- If the requests to previous asset files are not re-routed, set the [debug](./available-options.md#debug) option, deploy the edge function again and troubleshoot the issue using the [edge functions logs](https://docs.netlify.com/edge-functions/get-started/#monitor).
+- If requests to previous deploy assets aren't being re-routed as expected, enable the [debug](./available-options.md#debug) option, redeploy the Edge Function, and inspect the [Edge Functions logs](https://docs.netlify.com/edge-functions/get-started/#monitor) for details.
 
 
