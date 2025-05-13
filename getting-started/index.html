@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-root" content="/wl-netlify-skew-protection">
-    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.8.1.800400057710">
+    <meta name="turbo-cache-control" content="no-cache" data-turbo-track="reload" data-track-token="3.8.1.800416284769">
 
     <!-- See retype.com -->
     <meta name="generator" content="Retype 3.8.1">
@@ -32,12 +32,12 @@
     <script data-cfasync="false">(function () { var el = document.documentElement, m = localStorage.getItem("doc_theme"), wm = window.matchMedia; if (m === "dark" || (!m && wm && wm("(prefers-color-scheme: dark)").matches)) { el.classList.add("dark") } else { el.classList.remove("dark") } })();</script>
 
     <link href="../static/favicon.png" rel="icon">
-    <link href="../resources/css/retype.css?v=3.8.1.800400057710" rel="stylesheet">
+    <link href="../resources/css/retype.css?v=3.8.1.800416284769" rel="stylesheet">
 
-    <script data-cfasync="false" src="../resources/js/config.js?v=3.8.1.800400057710" data-turbo-eval="false" defer></script>
+    <script data-cfasync="false" src="../resources/js/config.js?v=3.8.1.800416284769" data-turbo-eval="false" defer></script>
     <script data-cfasync="false" src="../resources/js/retype.js?v=3.8.1" data-turbo-eval="false" defer></script>
-    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=3.8.1.800400057710" data-turbo-eval="false" defer></script>
-    <script id="prism-js" data-cfasync="false" src="../resources/js/prism.js?v=3.8.1.800400057710" defer></script>
+    <script id="lunr-js" data-cfasync="false" src="../resources/js/lunr.js?v=3.8.1.800416284769" data-turbo-eval="false" defer></script>
+    <script id="prism-js" data-cfasync="false" src="../resources/js/prism.js?v=3.8.1.800416284769" defer></script>
 
     <link href="https://workleap.github.io/wl-idp-docs-hub/static/retype-customization.css" rel="stylesheet" />
 
@@ -577,7 +577,9 @@ export default defineConfig({
 </li>
 <li><p>Search for the entry point file of the application and take a look at the response headers.</p>
 </li>
-<li><p>The <code v-pre>Set-Cookie</code> header should include an <code v-pre>nf_sp</code> cookie (or wathever name you choose for the Skew Protection cookie)</p>
+<li><p>The response should include a <code v-pre>nf_sp</code> cookie (or wathever name you choose for the Skew Protection cookie)</p>
+</li>
+<li><p>Then, navigate to a lazy loaded route and refresh the page and find an asset request. The asset request should include a <code v-pre>nf_sp</code> cookie.</p>
 </li>
 </ol>
 <doc-anchor-target id="troubleshoot-issues">
