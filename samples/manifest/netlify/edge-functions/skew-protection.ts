@@ -1,7 +1,7 @@
 import { config, createSkewProtectionFunction } from "@workleap/netlify-skew-protection";
 
-const fct = createSkewProtectionFunction("manifest", {
-    entrypoints: ["/", "/manifest.json"],
+const fct = createSkewProtectionFunction("entrypoints", {
+    entrypoints: ["/"],
     verbose: true
 });
 
