@@ -175,7 +175,7 @@ export default defineConfig({
 ```
 
 !!!warning
-If the build of the application is outputed in the same `dist` path as the edge function, make sure to to output the application files in a subfolder like `dist/app` rather than the root of the `dist` folder.
+If the build of the application is output in the same `dist` path as the edge function, make sure to output the application files in a subfolder like `dist/app` rather than the root of the `dist` folder.
 !!!
 
 Then, update the `netlify.toml` to point to the new Edge Function build output:
