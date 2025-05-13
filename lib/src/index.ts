@@ -10,7 +10,7 @@ export const CookiePath = "/";
 // Expires in 1 day.
 export const CookieMaxAge = 1000 * 60 * 60 * 24;
 
-export type Mode = "spa" | "federated" | "manifest";
+export type Mode = "spa" | "entrypoints";
 
 export interface CreateSkewProtectionFunctionOptions {
     /**
@@ -146,8 +146,14 @@ export function createSkewProtectionFunction(mode: Mode, options: CreateSkewProt
                 return;
             }
 
-            if (mode !== "spa" && entrypoints.length === 0) {
+            if (mode === "entrypoints" && entrypoints.length === 0) {
                 console.error(`When the edge function mode is "${mode}", the entrypoints of the application must be provided as options of the "createSkewProtectionFunction" function.`);
+
+                return;
+            }
+
+            if (mode !== "spa" && mode !== "entrypoints") {
+                console.error(`Unknown mode: "${mode}". Valid modes are "spa" and "entrypoints".`);
 
                 return;
             }
@@ -177,7 +183,7 @@ export function createSkewProtectionFunction(mode: Mode, options: CreateSkewProt
 
                     canSetCookie = true;
                 }
-            } else {
+            } else if (mode === "entrypoints") {
                 logDebug("Provided entrypoints are:", entrypoints);
 
                 // For scenarios such as a federation application or an application returning a manifest file, the function
