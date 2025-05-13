@@ -216,7 +216,9 @@ To test your new set up, follow these steps:
 
 2. Search for the entry point file of the application and take a look at the response headers.
 
-3. The `Set-Cookie` header should include an `nf_sp` cookie (or wathever name you choose for the Skew Protection cookie)
+3. The response should include a `nf_sp` cookie (or wathever name you choose for the Skew Protection cookie)
+
+4. Then, navigate to a lazy loaded route and refresh the page and find an asset request. The asset request should include a `nf_sp` cookie.
 
 ### Troubleshoot issues
 
