@@ -19,6 +19,9 @@ hub:
     link: https://workleap.github.io/wl-idp-docs-hub/
     alt: Workleap's IDP homepage
 
+nav:
+    mode: stack
+
 start:
     pro: true
 
