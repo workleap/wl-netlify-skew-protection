@@ -1,5 +1,11 @@
 # @workleap/netlify-skew-protection
 
+## 0.0.5
+
+### Patch Changes
+
+- [#22](https://github.com/workleap/wl-netlify-skew-protection/pull/22) [`f8820e4`](https://github.com/workleap/wl-netlify-skew-protection/commit/f8820e4e6a0a9403abbb765998cfab1b433ff6b1) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Normalize the "modes" to "spa" and "entrypoints".
+
 ## 0.0.4
 
 ### Patch Changes
