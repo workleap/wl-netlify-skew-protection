@@ -159,7 +159,7 @@ export function createSkewProtectionFunction(mode: Mode, options: CreateSkewProt
             }
 
             logDebug(`The edge function is operating in "${mode}" mode.`);
-            logDebug("The HMAC secret has been retrieved successfully from the site environment variables.");
+            logDebug(`The HMAC secret has been retrieved successfully from the site "${secretEnvironmentVariableName}" environment variable.`);
 
             const url = new URL(request.url);
 
