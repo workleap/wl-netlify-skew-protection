@@ -1,6 +1,6 @@
 # netlify-skew-protection
 
-A library to enable [Skew Protection](https://vercel.com/blog/version-skew-protection) for a Netlify site.
+A library to enable [Skew Protection](https://vercel.com/blog/version-skew-protection) for a [Netlify](https://www.netlify.com/) site.
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
 [![CI](https://github.com/workleap/wl-netlify-skew-protection/actions/workflows/ci.yml/badge.svg)](https://github.com/workleap/wl-netlify-skew-protection/actions/workflows/ci.yml)
