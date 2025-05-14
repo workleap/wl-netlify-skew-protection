@@ -61,7 +61,7 @@ Finally, open the `skew-protection.ts` file and paste in the contents for either
 
 #### SPA mode
 
-Use this mode if your application is a standard Single Page Application, where all paths are typically served from a single `index.html` file
+Use this mode if your application is a standard Single Page Application, where all paths are typically served from a single `index.html` file.
 
 ```ts skew-protection.ts
 import { config, createSkewProtectionFunction } from "@workleap/netlify-skew-protection";
