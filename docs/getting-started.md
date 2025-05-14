@@ -61,6 +61,8 @@ Finally, open the `skew-protection.ts` file and paste in the contents for either
 
 #### SPA mode
 
+Use this mode if your application is a standard Single Page Application, where all paths are typically served from a single `index.html` file
+
 ```ts skew-protection.ts
 import { config, createSkewProtectionFunction } from "@workleap/netlify-skew-protection";
 
@@ -70,6 +72,10 @@ export { config, fct as default };
 ```
 
 #### Entrypoints mode
+
+This mode is useful for [federated applications](https://module-federation.io/) with multiple remotes or applications that use a [manifest file](https://rsbuild.dev/config/output/manifest) as the entry point.
+
+In the case of a federated setup, the entry points should typically correspond to the remote modules' entry files.
 
 ```ts skew-protection.ts
 import { config, createSkewProtectionFunction } from "@workleap/netlify-skew-protection";
