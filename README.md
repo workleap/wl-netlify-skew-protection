@@ -4,7 +4,7 @@ A library to enable [Skew Protection](https://vercel.com/blog/version-skew-prote
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
 [![CI](https://github.com/workleap/wl-netlify-skew-protection/actions/workflows/ci.yml/badge.svg)](https://github.com/workleap/wl-netlify-skew-protection/actions/workflows/ci.yml)
-[![npm version](https://img.shields.io/npm/v/@workleap/wl-netlify-skew-protection)](https://www.npmjs.com/package/@workleap/wl-netlify-skew-protection)
+[![npm version](https://img.shields.io/npm/v/@workleap/netlify-skew-protection)](https://www.npmjs.com/package/@workleap/netlify-skew-protection)
 
 ## Have a question or found an issue?
 
