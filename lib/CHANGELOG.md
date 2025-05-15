@@ -1,5 +1,11 @@
 # @workleap/netlify-skew-protection
 
+## 1.0.0
+
+### Major Changes
+
+- [#31](https://github.com/workleap/wl-netlify-skew-protection/pull/31) [`0da614e`](https://github.com/workleap/wl-netlify-skew-protection/commit/0da614e48b44809eb336f46ebaf69011ba2d2d2c) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Removing nanoid and first major release.
+
 ## 0.0.5
 
 ### Patch Changes
