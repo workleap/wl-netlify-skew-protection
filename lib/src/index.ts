@@ -1,7 +1,7 @@
 // Original Gist provided by Netlify: https://gist.github.com/sean-roberts/cbf1e9197e37e8dcd22c4f058ad86448.
 
 import type { Config, Context } from "@netlify/edge-functions";
-import { nanoid } from "nanoid";
+// import { nanoid } from "nanoid";
 
 export const SecretEnvironmentVariable = "SKEW_PROTECTION_SECRET";
 export const CookieName = "nf_sp";
@@ -107,6 +107,8 @@ function decodeHex(data: string): Uint8Array {
     return result;
 }
 
+let logId = 0;
+
 /**
  * Creates a skew protection edge function to return as the default "export".
  * @param mode The actual mode in which the returned function should operate. For a SPA host application, the mode should be "spa".
@@ -126,7 +128,7 @@ export function createSkewProtectionFunction(mode: Mode, options: CreateSkewProt
 
     return async (request: Request, context: Context) => {
         try {
-            const logDebug = createLogFunction(nanoid(7), verbose);
+            const logDebug = createLogFunction((++logId).toString(), verbose);
 
             if (!context.deploy || !context.deploy.id || !context.deploy.published) {
                 logDebug("This is dev mode, exiting.");
