@@ -1,7 +1,6 @@
 // Original Gist provided by Netlify: https://gist.github.com/sean-roberts/cbf1e9197e37e8dcd22c4f058ad86448.
 
 import type { Config, Context } from "@netlify/edge-functions";
-import { nanoid } from "nanoid";
 
 export const SecretEnvironmentVariable = "SKEW_PROTECTION_SECRET";
 export const CookieName = "nf_sp";
@@ -126,7 +125,7 @@ export function createSkewProtectionFunction(mode: Mode, options: CreateSkewProt
 
     return async (request: Request, context: Context) => {
         try {
-            const logDebug = createLogFunction(nanoid(7), verbose);
+            const logDebug = createLogFunction(crypto.randomUUID(), verbose);
 
             if (!context.deploy || !context.deploy.id || !context.deploy.published) {
                 logDebug("This is dev mode, exiting.");
