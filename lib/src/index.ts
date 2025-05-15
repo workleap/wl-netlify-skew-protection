@@ -1,7 +1,6 @@
 // Original Gist provided by Netlify: https://gist.github.com/sean-roberts/cbf1e9197e37e8dcd22c4f058ad86448.
 
 import type { Config, Context } from "@netlify/edge-functions";
-// import { nanoid } from "nanoid";
 
 export const SecretEnvironmentVariable = "SKEW_PROTECTION_SECRET";
 export const CookieName = "nf_sp";
