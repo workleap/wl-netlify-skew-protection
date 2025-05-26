@@ -178,7 +178,7 @@ export function createSkewProtectionFunction(mode: Mode, options: CreateSkewProt
                 // Since any URL pathname could be an entrypoint for a SPA, the request is considered
                 // as an entrypoint of if the browser is requesting HTML content.
                 if (acceptHeader?.toLowerCase().includes("text/html")) {
-                    logDebug("The request accept \"text/html\" files, will return the skew protection cookie with the response.");
+                    console.log("The request accept \"text/html\" files, will return the skew protection cookie with the response.");
 
                     canSetCookie = true;
                 }
@@ -189,7 +189,7 @@ export function createSkewProtectionFunction(mode: Mode, options: CreateSkewProt
                 // cannot rely on the "accept" header before the entrypoints will usually be a JavaScript or a JSON files.
                 // Those scenarios are handled by validating the request URL pathname against an array of entrypoints provided by the host application.
                 if (entrypoints.includes(url.pathname)) {
-                    logDebug("One of the provided entrypoint match the request URL path name, will return the skew protection cookie with the response.");
+                    console.log("One of the provided entrypoint match the request URL path name, will return the skew protection cookie with the response.");
 
                     canSetCookie = true;
                 }
