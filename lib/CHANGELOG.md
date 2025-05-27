@@ -1,5 +1,11 @@
 # @workleap/netlify-skew-protection
 
+## 1.0.1
+
+### Patch Changes
+
+- [#33](https://github.com/workleap/wl-netlify-skew-protection/pull/33) [`10d007c`](https://github.com/workleap/wl-netlify-skew-protection/commit/10d007c821ccb7e7aecffbd965dc1e1b24738932) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Outputting more logs by default.
+
 ## 1.0.0
 
 ### Major Changes
