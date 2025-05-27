@@ -1,5 +1,6 @@
 {
     "name": "@samples/spa",
+    "description": "Samples to test a Single Page Application setup.",
     "version": "0.0.0",
     "private": true,
     "type": "module",

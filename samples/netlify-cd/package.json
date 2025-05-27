@@ -1,5 +1,6 @@
 {
     "name": "@samples/netlify-cd",
+    "description": "Samples to test a Netlify Continuous Delivery setup.",
     "version": "0.0.0",
     "private": true,
     "type": "module",

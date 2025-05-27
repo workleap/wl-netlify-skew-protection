@@ -1,5 +1,6 @@
 {
     "name": "workspace-root",
+    "description": "Workspace root",
     "version": "0.0.0",
     "author": "Workleap",
     "private": true,
