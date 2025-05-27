@@ -3,7 +3,6 @@
 /** @type {import("syncpack").RcFile} */
 export default {
     "lintFormatting": false,
-    "dependencyTypes": ["prod", "dev"],
     "semverGroups": [
         {
             "packages": ["@workleap/netlify-skew-protection"],
@@ -33,7 +32,7 @@ export default {
     "versionGroups": [
         {
             "packages": ["**"],
-            "dependencyTypes": ["prod", "dev"],
+            "dependencyTypes": ["prod", "dev", "peer"],
             "preferVersion": "highestSemver",
             "label": "Lib and Sample should have a single version across the repository."
         }

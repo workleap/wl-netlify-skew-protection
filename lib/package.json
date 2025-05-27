@@ -34,15 +34,15 @@
         "@netlify/edge-functions": "^2.12.0"
     },
     "devDependencies": {
-        "@rslib/core": "0.6.9",
-        "@typescript-eslint/parser": "8.29.0",
-        "@workleap/eslint-plugin": "3.3.2",
-        "@workleap/rslib-configs": "1.0.4",
-        "@workleap/typescript-configs": "3.0.3",
+        "@rslib/core": "0.8.0",
+        "@typescript-eslint/parser": "8.32.1",
+        "@workleap/eslint-plugin": "3.4.2",
+        "@workleap/rslib-configs": "1.0.6",
+        "@workleap/typescript-configs": "3.0.4",
         "eslint": "8.57.1",
-        "msw": "2.7.3",
+        "msw": "2.8.4",
         "typescript": "5.8.3",
-        "vitest": "3.1.1"
+        "vitest": "3.1.4"
     },
     "sideEffects": false
 }
