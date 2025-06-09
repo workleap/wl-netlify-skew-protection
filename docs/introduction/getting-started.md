@@ -1,6 +1,5 @@
 ---
 order: 100
-icon: rocket
 ---
 
 # Getting started
@@ -30,23 +29,9 @@ Netlify's mechanism for intercepting and rerouting CDN requests is called [Edge 
 
 First, open a terminal at the root of the project where you'll define the Edge Function. Then install the following package:
 
-+++ pnpm
 ```bash
 pnpm add -D @workleap/netlify-skew-protection
 ```
-+++ yarn
-```bash
-yarn add -D @workleap/netlify-skew-protection
-```
-+++ npm
-```bash
-npm install -D @workleap/netlify-skew-protection
-```
-+++
-
-!!!warning
-While you can use any package manager to develop an application with Squide, it is highly recommended that you use PNPM as the guides has been developed and tested with PNPM.
-!!!
 
 Next, create a `netlify` folder at the root of the project and add a file named `skew-protection.ts`:
 
@@ -87,7 +72,7 @@ const fct = createSkewProtectionFunction("entrypoints", {
 export { config, fct as default };
 ```
 
-!!!info
+!!!tip
 The example above assumes that the application's entry point is `index.html`. If your app uses a different entry point, be sure to replace `/` with the correct path.
 !!!
 
@@ -124,23 +109,9 @@ However, if your application is built and deployed using [Netlify Continuous Dep
 
 First, open a terminal at the root of the project and install the following dependency:
 
-+++ pnpm
 ```bash
 pnpm add -D @rslib/core
 ```
-+++ yarn
-```bash
-yarn add -D @rslib/core
-```
-+++ npm
-```bash
-npm install -D @rslib/core
-```
-+++
-
-!!!warning
-While you can use any package manager to develop an application with Squide, it is highly recommended that you use PNPM as the guides has been developed and tested with PNPM.
-!!!
 
 Then, create a file named `rslib.edge-functions.ts` at the root of the project:
 
@@ -215,7 +186,7 @@ import { config, createSkewProtectionFunction } from "https://esm.sh/@workleap/n
 
 Since the package is fetched from a third-party CDN instead of being installed locally via `node_modules`, you can safely remove `@workleap/netlify-skew-protection` from the `package.json` file.
 
-!!!info
+!!!tip
 The example above always pulls the **latest version** of the package. For more predictable behavior, [esm.sh](https://esm.sh/) also supports importing a **specific version**, which is a safer and recommended option for production use.
 !!!
 
@@ -246,13 +217,13 @@ To verify that Skew Protection is working as expected, follow these steps:
 3. You should see a `nf_sp` cookie (or the custom name you configured for the Skew Protection cookie) in the response:
 
 :::align-image-left
-![](./static/entrypoint_cookie.png)
+![Response headers cookie example](../static/entrypoint_cookie.png)
 :::
 
-4. Refresh the page, and inspect the request headers of a JS and CSS assets. The request should include the same `nf_sp cookie`, confirming that the session is pinned to the original deploy:
+4. Refresh the page, and inspect the request headers of a JS and CSS assets. The request should include the same `nf_sp` cookie, confirming that the session is pinned to the original deploy:
 
 :::align-image-left
-![](./static/asset_cookie.png)
+![Request headers cookie example](../static/asset_cookie.png)
 :::
 
 ### Troubleshoot issues

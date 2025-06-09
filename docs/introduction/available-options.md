@@ -1,7 +1,3 @@
----
-icon: gear
----
-
 # Available options
 
 ## `secretEnvironmentVariableName`
