@@ -1,0 +1,11 @@
+{
+    "$schema": "https://context7.com/schema/context7.json",
+    "projectTitle": "Workleap Netlify Skew Protection",
+    "description": "Library to enable Skew Protection for a Netlify site.",
+    "folders": [
+        "docs"
+    ],
+    "excludeFolders": [
+        "docs/updating"
+    ]
+}
