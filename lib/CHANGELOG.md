@@ -1,5 +1,11 @@
 # @workleap/netlify-skew-protection
 
+## 1.0.3
+
+### Patch Changes
+
+- [#42](https://github.com/workleap/wl-netlify-skew-protection/pull/42) [`9fbd7c7`](https://github.com/workleap/wl-netlify-skew-protection/commit/9fbd7c74001f78f686f3a12cfdfad6a58326333d) Thanks [@copilot-swe-agent](https://github.com/apps/copilot-swe-agent)! - Bump version to test OIDC publishing
+
 ## 1.0.2
 
 ### Patch Changes
