@@ -5,8 +5,14 @@
     "description": "Utilities to enable Netlify Skew Protection.",
     "license": "Apache-2.0",
     "type": "module",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/workleap/wl-netlify-skew-protection.git",
+        "directory": "lib"
+    },
     "publishConfig": {
         "access": "public",
+        "provenance": true,
         "exports": {
             ".": {
                 "types": "./dist/index.d.ts",
