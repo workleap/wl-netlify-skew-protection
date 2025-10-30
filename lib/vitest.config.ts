@@ -5,7 +5,8 @@ export default defineConfig({
         environment: "node",
         include: ["tests/**/*.test.ts"],
         exclude: ["node_modules", "dist"],
-        reporters: "verbose"
+        reporters: "verbose",
+        setupFiles: ["./tests/setup.ts"]
     },
     cacheDir: "./node_modules/.cache/vitest"
 });
