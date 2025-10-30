@@ -1,8 +1,0 @@
-**/dist/*
-**/node_modules/*
-pnpm-lock.yaml
-*.md
-
-# dot folder are not linted by default.
-!.vscode
-!.github

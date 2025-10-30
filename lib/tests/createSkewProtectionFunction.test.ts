@@ -65,6 +65,7 @@ describe("spa mode", () => {
         // Setup a mock server to simulate the resource request
         const server = setupServer(http.get("https://previous-deploy-id--site-name.netlify.app/file.js", () => Response.json({ success: true })));
         server.listen();
+
         onTestFinished(() => server.close());
 
         // Setup the request and context.
@@ -141,6 +142,7 @@ describe("entrypoints mode", () => {
         // Setup a mock server to simulate the resource request
         const server = setupServer(http.get("https://previous-deploy-id--site-name.netlify.app/file.js", () => Response.json({ success: true })));
         server.listen();
+
         onTestFinished(() => server.close());
 
         // Setup the request and context.

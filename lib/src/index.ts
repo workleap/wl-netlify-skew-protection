@@ -74,7 +74,9 @@ export async function sign(data: Payload, secret: string): Promise<string> {
 
 /** Verifies the signature of the cookie, then return the payload. If invalid, returns `null` */
 export async function verifySignature(cookie: string, secret: string): Promise<Payload | null> {
-    const [message, signature] = cookie.split(".").map(value => decodeHex(value));
+    const [messageHex, signatureHex] = cookie.split(".");
+    const message = decodeHex(messageHex);
+    const signature = decodeHex(signatureHex);
     const keyData = new TextEncoder().encode(secret);
     const cryptoKey = await crypto.subtle.importKey("raw", keyData, { name: "HMAC", hash: "SHA-256" }, true, ["sign", "verify"]);
     const valid = await crypto.subtle.verify("HMAC", cryptoKey, signature, message);
@@ -96,8 +98,9 @@ function encodeHex(data: Uint8Array): string {
     return result;
 }
 
-function decodeHex(data: string): Uint8Array {
-    const result = new Uint8Array(data.length / 2);
+function decodeHex(data: string): Uint8Array<ArrayBuffer> {
+    const buffer = new ArrayBuffer(data.length / 2);
+    const result = new Uint8Array(buffer);
 
     for (let i = 0; i < data.length; i += 2) {
         result[i / 2] = parseInt(data.slice(i, i + 2), 16);
@@ -127,7 +130,7 @@ export function createSkewProtectionFunction(mode: Mode, options: CreateSkewProt
         try {
             const logDebug = createLogFunction(crypto.randomUUID(), verbose);
 
-            if (!context.deploy || !context.deploy.id || !context.deploy.published) {
+            if (!context.deploy?.id || !context.deploy.published) {
                 logDebug("This is dev mode, exiting.");
 
                 return;
@@ -264,7 +267,7 @@ export function createSkewProtectionFunction(mode: Mode, options: CreateSkewProt
             target.hostname = hostname;
 
             return fetch(target, request);
-        } catch (error) {
+        } catch(error) {
             console.error(error);
 
             return;
