@@ -1,5 +1,11 @@
 # @workleap/netlify-skew-protection
 
+## 1.0.4
+
+### Patch Changes
+
+- [#45](https://github.com/workleap/wl-netlify-skew-protection/pull/45) [`b969311`](https://github.com/workleap/wl-netlify-skew-protection/commit/b9693119aae26ba5bd746dd1499bab61561381a6) Thanks [@patricklafrance](https://github.com/patricklafrance)! - Bumped dependency versions.
+
 ## 1.0.3
 
 ### Patch Changes
