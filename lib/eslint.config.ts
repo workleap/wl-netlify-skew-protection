@@ -1,5 +1,5 @@
-import { defineConfig } from "@eslint/config";
 import { defineTypeScriptLibraryConfig } from "@workleap/eslint-configs";
+import { defineConfig } from "eslint/config";
 
 export default defineConfig([
     {

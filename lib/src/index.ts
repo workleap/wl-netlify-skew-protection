@@ -127,7 +127,7 @@ export function createSkewProtectionFunction(mode: Mode, options: CreateSkewProt
         try {
             const logDebug = createLogFunction(crypto.randomUUID(), verbose);
 
-            if (!context.deploy || !context.deploy.id || !context.deploy.published) {
+            if (!context.deploy?.id || !context.deploy.published) {
                 logDebug("This is dev mode, exiting.");
 
                 return;
@@ -264,7 +264,7 @@ export function createSkewProtectionFunction(mode: Mode, options: CreateSkewProt
             target.hostname = hostname;
 
             return fetch(target, request);
-        } catch (error) {
+        } catch(error) {
             console.error(error);
 
             return;

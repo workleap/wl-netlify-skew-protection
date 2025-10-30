@@ -3,7 +3,7 @@ import { defineConfig, globalIgnores } from "eslint/config";
 
 export default defineConfig([
     globalIgnores([
-        "packages",
+        "lib",
         "samples",
         "docs"
     ]),
