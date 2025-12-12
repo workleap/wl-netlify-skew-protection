@@ -267,7 +267,7 @@ export function createSkewProtectionFunction(mode: Mode, options: CreateSkewProt
             target.hostname = hostname;
 
             return fetch(target, request);
-        } catch(error) {
+        } catch (error) {
             console.error(error);
 
             return;
